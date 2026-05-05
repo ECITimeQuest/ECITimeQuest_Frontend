@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_app/features/auth/data/datasources/firebase_auth_data_source.dart';
-import 'package:flutter_app/features/auth/data/datasources/backend_auth_data_source.dart';
-import 'package:flutter_app/features/auth/data/models/user_response.dart';
+import 'package:flutter_app/features/auth/data/datasources/firebase_auth_datasource.dart';
+import 'package:flutter_app/features/auth/data/datasources/backend_auth_datasource.dart';
+import 'package:flutter_app/features/auth/data/models/responses/user_response.dart';
 
 class AuthRepository {
   final FirebaseAuthDataSource _firebaseDataSource;

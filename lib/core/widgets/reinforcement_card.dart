@@ -2,8 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
 import 'package:flutter_app/core/widgets/padded_card.dart';
 
-class ReinforcementSection extends StatelessWidget {
-  const ReinforcementSection({super.key});
+class ReinforcementCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final List<Widget> children;
+
+  const ReinforcementCard({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.children,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +43,14 @@ class ReinforcementSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Temas para reforzar',
+                      title,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: AppColors.onSurface,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Recomendaciones personalizadas\nde tu IA Tutor',
+                      subtitle,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: Colors.black.withValues(alpha: 0.50),
                       ),
@@ -52,29 +61,13 @@ class ReinforcementSection extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
-          _buildReinforcementCard(
-            context,
-            icon: Icons.palette,
-            iconBgColor: AppColors.surfaceContainer,
-            iconColor: AppColors.primary,
-            title: 'Revolución\nFrancesa',
-            subtitle: 'Próxima meta: 60%\nmaestría',
-          ),
-          const SizedBox(height: 12),
-          _buildReinforcementCard(
-            context,
-            icon: Icons.history,
-            iconBgColor: AppColors.surfaceContainer,
-            iconColor: AppColors.primary,
-            title: 'Era Industrial',
-            subtitle: 'Repasar inventos clave',
-          ),
+          ...children,
         ],
       ),
     );
   }
 
-  Widget _buildReinforcementCard(
+  static Widget buildReinforcementCard(
     BuildContext context, {
     required IconData icon,
     required Color iconBgColor,

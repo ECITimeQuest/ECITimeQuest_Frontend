@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
 
-class QuestionOptionItem extends StatelessWidget {
+class QuizOptionItem extends StatelessWidget {
   final String letter;
   final String text;
   final bool selected;
   final VoidCallback? onTap;
+  final Color? backgroundColor;
+  final Color? textColor;
 
-  const QuestionOptionItem({
+  const QuizOptionItem({
     super.key,
     required this.letter,
     required this.text,
     this.selected = false,
     this.onTap,
+    this.backgroundColor,
+    this.textColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    final Color cardColor = selected ? AppColors.primary : Colors.white;
-    final Color textColor = selected ? Colors.white : AppColors.onSurface;
+    final Color cardColor =
+        backgroundColor ?? (selected ? AppColors.primary : Colors.white);
+    final Color contentColor =
+        textColor ?? (selected ? Colors.white : AppColors.onSurface);
     final Color badgeColor = selected
         ? Colors.white.withValues(alpha: 0.16)
         : AppColors.surfaceVariant;
@@ -66,7 +72,7 @@ class QuestionOptionItem extends StatelessWidget {
                 child: Text(
                   text,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: textColor,
+                    color: contentColor,
                     fontWeight: FontWeight.w600,
                     height: 1.35,
                   ),

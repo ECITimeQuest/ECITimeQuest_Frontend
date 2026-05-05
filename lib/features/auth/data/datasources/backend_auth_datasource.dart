@@ -2,16 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter_app/core/network/api_config.dart';
 import 'package:flutter_app/core/network/api_exception.dart';
 import 'package:flutter_app/core/network/dio_exception_mapper.dart';
-import 'package:flutter_app/features/auth/data/models/user_response.dart';
+import 'package:flutter_app/features/auth/data/models/responses/user_response.dart';
 
 class BackendAuthDataSource {
   final Dio _dio;
   final DioExceptionMapper _exceptionMapper;
 
-  BackendAuthDataSource(
-    this._dio, {
-    DioExceptionMapper? exceptionMapper,
-  }) : _exceptionMapper = exceptionMapper ?? const DioExceptionMapper();
+  BackendAuthDataSource(this._dio, {DioExceptionMapper? exceptionMapper})
+    : _exceptionMapper = exceptionMapper ?? const DioExceptionMapper();
 
   Future<UserResponse> syncUser() async {
     try {

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
 
-class QuestionProgressHeader extends StatelessWidget {
+class QuizProgressHeader extends StatelessWidget {
   final String moduleName;
   final String chipContent;
+  final double progress;
 
-  const QuestionProgressHeader({
+  const QuizProgressHeader({
     super.key,
     required this.moduleName,
     required this.chipContent,
+    required this.progress,
   });
 
   @override
@@ -48,7 +50,7 @@ class QuestionProgressHeader extends StatelessWidget {
             ),
           ],
         ),
-        const LinearProgressIndicator(value: 0.40),
+        LinearProgressIndicator(value: progress),
       ],
     );
   }

@@ -21,6 +21,7 @@ class AppToast {
         color: Colors.black87,
         child: Row(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(
               width: 18,
@@ -46,16 +47,21 @@ class AppToast {
         color: color,
         child: Row(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: Colors.white, size: 18),
             const SizedBox(width: 8),
             Flexible(
-              child: Text(message, style: const TextStyle(color: Colors.white)),
+              child: Text(
+                message,
+                style: const TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         ),
       ),
-      duration: const Duration(seconds: 4),
+      duration: const Duration(seconds: 6),
       align: Alignment.topCenter,
       onlyOne: true,
     );

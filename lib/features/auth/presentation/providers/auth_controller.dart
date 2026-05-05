@@ -1,8 +1,8 @@
 import 'dart:developer' as developer;
 
-import 'package:flutter_app/features/auth/data/models/user_response.dart';
+import 'package:flutter_app/features/auth/data/models/responses/user_response.dart';
 import 'package:flutter_app/features/auth/data/repositories/auth_repository.dart';
-import 'package:flutter_app/features/auth/data/providers/auth_dependencies.dart';
+import 'package:flutter_app/features/auth/data/providers/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authUserProvider = AsyncNotifierProvider<AuthNotifier, UserResponse?>(
