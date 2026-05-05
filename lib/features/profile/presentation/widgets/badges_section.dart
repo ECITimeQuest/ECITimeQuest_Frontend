@@ -62,7 +62,6 @@ class BadgesSection extends StatelessWidget {
     required String title,
   }) {
     return PaddedCard(
-      elevation: 1,
       verticalPadding: 25,
       child: Column(
         children: [

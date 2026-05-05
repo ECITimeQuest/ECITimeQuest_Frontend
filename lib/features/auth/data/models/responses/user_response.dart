@@ -1,4 +1,4 @@
-import 'package:flutter_app/features/auth/data/models/subscription_plan.dart';
+import 'package:flutter_app/features/auth/data/models/enums/subscription_plan.dart';
 
 class UserResponse {
   final String id;
