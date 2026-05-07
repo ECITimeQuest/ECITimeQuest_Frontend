@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_app/core/network/api_config.dart';
-import 'package:flutter_app/core/network/api_exception.dart';
 import 'package:flutter_app/core/network/dio_exception_mapper.dart';
 import 'package:flutter_app/features/learning/data/models/requests/finish_session_request.dart';
 import 'package:flutter_app/features/learning/data/models/requests/start_session_request.dart';
@@ -19,11 +18,11 @@ class LearningDataSource {
     StartSessionRequest request,
   ) async {
     try {
-      final response = await _dio.post<Map<String, dynamic>>(
+      final response = await _dio.post(
         ApiConfig.startSessionPath,
         data: request.toJson(),
       );
-      return _parseResponse(response.data, LearningSessionResponse.fromJson);
+      return LearningSessionResponse.fromJson(response.data);
     } on DioException catch (exception) {
       throw _exceptionMapper.map(exception);
     }
@@ -31,11 +30,11 @@ class LearningDataSource {
 
   Future<SubmitAnswerResponse> submitAnswer(SubmitAnswerRequest request) async {
     try {
-      final response = await _dio.post<Map<String, dynamic>>(
+      final response = await _dio.post(
         ApiConfig.submitAnswerPath(request.sessionId),
         data: request.toJson(),
       );
-      return _parseResponse(response.data, SubmitAnswerResponse.fromJson);
+      return SubmitAnswerResponse.fromJson(response.data);
     } on DioException catch (exception) {
       throw _exceptionMapper.map(exception);
     }
@@ -46,24 +45,13 @@ class LearningDataSource {
     String sessionId,
   ) async {
     try {
-      final response = await _dio.post<Map<String, dynamic>>(
+      final response = await _dio.post(
         ApiConfig.finishSessionPath(sessionId),
         data: request.toJson(),
       );
-      return _parseResponse(response.data, LearningSessionResponse.fromJson);
+      return LearningSessionResponse.fromJson(response.data);
     } on DioException catch (exception) {
       throw _exceptionMapper.map(exception);
     }
-  }
-
-  T _parseResponse<T>(
-    Map<String, dynamic>? data,
-    T Function(Map<String, dynamic>) fromJson,
-  ) {
-    if (data == null) {
-      throw const ApiException(message: 'Empty response body');
-    }
-
-    return fromJson(data);
   }
 }

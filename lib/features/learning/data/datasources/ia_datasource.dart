@@ -14,11 +14,11 @@ class IADataSource {
 
   Future<IATaskResponse> requestIATask(IATaskRequest request) async {
     try {
-      final response = await _dio.post<Map<String, dynamic>>(
+      final response = await _dio.post(
         ApiConfig.iaRequestPath,
         data: request.toJson(),
       );
-      return _parseIATaskResponse(response.data);
+      return IATaskResponse.fromJson(response.data);
     } on DioException catch (exception) {
       throw _exceptionMapper.map(exception);
     }
@@ -26,20 +26,10 @@ class IADataSource {
 
   Future<IATaskResponse> getIATask(String taskId) async {
     try {
-      final response = await _dio.get<Map<String, dynamic>>(
-        '${ApiConfig.iaRequestPath}/$taskId',
-      );
-      return _parseIATaskResponse(response.data);
+      final response = await _dio.get('${ApiConfig.iaRequestPath}/$taskId');
+      return IATaskResponse.fromJson(response.data);
     } on DioException catch (exception) {
       throw _exceptionMapper.map(exception);
     }
-  }
-
-  IATaskResponse _parseIATaskResponse(Map<String, dynamic>? data) {
-    if (data == null) {
-      throw const ApiException(message: 'Empty response body');
-    }
-
-    return IATaskResponse.fromJson(data);
   }
 }

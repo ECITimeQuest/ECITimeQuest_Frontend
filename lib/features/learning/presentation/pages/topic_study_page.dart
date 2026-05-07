@@ -3,6 +3,7 @@ import 'package:flutter_app/core/theme/app_colors.dart';
 import 'package:flutter_app/core/utils/error_handler.dart';
 import 'package:flutter_app/core/widgets/app_button.dart';
 import 'package:flutter_app/core/widgets/app_toast.dart';
+import 'package:flutter_app/core/widgets/page_header.dart';
 import 'package:flutter_app/core/widgets/padded_card.dart';
 import 'package:flutter_app/core/widgets/reinforcement_card.dart';
 import 'package:flutter_app/features/home/presentation/providers/navigation_provider.dart';
@@ -110,21 +111,7 @@ class _TopicStudyPageState extends ConsumerState<TopicStudyPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () =>
-                  ref.read(homeOverlayProvider.notifier).state = null,
-            ),
-            Expanded(
-              child: Text(
-                widget.topicName,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-          ],
-        ),
+        PageHeader(title: widget.topicName),
         const SizedBox(height: 10),
         PaddedCard(
           child: Column(

@@ -25,4 +25,9 @@ class ApiConfig {
   // Content
   static String getIAContext(String topicId) =>
       '/content/topics/$topicId/ai-context';
+  static String listPeriods = '/content/periods';
+  static String getPeriod(String periodId) => '/content/periods/$periodId';
+  static String listTopics(String periodId) =>
+      '/content/periods/$periodId/topics';
+  static String getTopic(String topicId) => '/content/topics/$topicId';
 }
