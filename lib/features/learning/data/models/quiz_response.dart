@@ -1,4 +1,4 @@
-import 'package:flutter_app/features/learning/data/models/responses/quiz_question.dart';
+import 'package:flutter_app/features/learning/data/models/quiz_question.dart';
 
 class QuizResponse {
   final List<QuizQuestion> questions;

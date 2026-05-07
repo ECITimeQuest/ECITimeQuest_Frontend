@@ -4,7 +4,13 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 
 class BottomNavBar extends StatelessWidget {
   final void Function(int) onTabChange;
-  const BottomNavBar({super.key, required this.onTabChange});
+  final int selectedIndex;
+
+  const BottomNavBar({
+    super.key,
+    required this.onTabChange,
+    required this.selectedIndex,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +29,7 @@ class BottomNavBar extends StatelessWidget {
         ],
       ),
       child: GNav(
+        selectedIndex: selectedIndex,
         gap: 8,
         color: AppColors.onSurface,
         activeColor: AppColors.primary,

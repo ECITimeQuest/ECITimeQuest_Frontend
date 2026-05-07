@@ -43,6 +43,12 @@ class AppTheme {
     ),
 
     // Texto principal
+    bodyLarge: TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 18,
+      color: AppColors.onSurface,
+    ),
+
     bodyMedium: TextStyle(
       fontFamily: 'Inter',
       fontSize: 14,
