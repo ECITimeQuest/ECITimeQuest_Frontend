@@ -7,12 +7,27 @@ class ApiConfig {
   static const Duration connectTimeout = Duration(seconds: 15);
   static const Duration receiveTimeout = Duration(seconds: 15);
 
+  // Auth
   static const String authSyncPath = '/auth/sync';
   static const String authMePath = '/auth/me';
+
+  // IA
   static const String iaRequestPath = '/ai/task';
+  static String iaTaskPath(String taskId) => '/ai/task/$taskId';
+
+  // Learning
   static const String startSessionPath = '/learning/sessions/start';
   static String submitAnswerPath(String sessionId) =>
       '/learning/sessions/$sessionId/answers';
   static String finishSessionPath(String sessionId) =>
       '/learning/sessions/$sessionId/finish';
+
+  // Content
+  static String getIAContext(String topicId) =>
+      '/content/topics/$topicId/ai-context';
+  static String listPeriods = '/content/periods';
+  static String getPeriod(String periodId) => '/content/periods/$periodId';
+  static String listTopics(String periodId) =>
+      '/content/periods/$periodId/topics';
+  static String getTopic(String topicId) => '/content/topics/$topicId';
 }

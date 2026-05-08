@@ -5,10 +5,10 @@ import 'package:flutter_app/features/learning/data/models/requests/finish_sessio
 import 'package:flutter_app/features/learning/data/models/requests/ia_task_context.dart';
 import 'package:flutter_app/features/learning/data/models/requests/ia_task_request.dart';
 import 'package:flutter_app/features/learning/data/models/requests/submit_answer_request.dart';
-import 'package:flutter_app/features/learning/data/models/responses/quiz_question.dart';
+import 'package:flutter_app/features/learning/data/models/quiz_question.dart';
 import 'package:flutter_app/features/learning/data/models/responses/submit_answer_response.dart';
-import 'package:flutter_app/features/learning/presentation/providers/ia_controller.dart';
-import 'package:flutter_app/features/learning/presentation/providers/learning_controller.dart';
+import 'package:flutter_app/features/learning/presentation/providers/ia_notifier.dart';
+import 'package:flutter_app/features/learning/presentation/providers/learning_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 

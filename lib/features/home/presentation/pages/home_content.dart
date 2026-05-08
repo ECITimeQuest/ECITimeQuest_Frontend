@@ -18,7 +18,7 @@ class HomeContent extends StatelessWidget {
           children: [
             Text(
               "Hola, Crononauta",
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             Text("Tu viaje por los siglos continúa"),
           ],

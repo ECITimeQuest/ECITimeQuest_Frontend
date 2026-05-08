@@ -1,18 +1,60 @@
-import 'quiz_question.dart';
+import '../quiz_question.dart';
+import '../historical_event.dart';
+import '../historical_figure.dart';
 
 sealed class IATaskData {
   const IATaskData();
 
   factory IATaskData.fromJson(Map<String, dynamic> json) {
-    if (json.containsKey('questions')) {
-      return QuizResponse.fromJson(json);
-    } else if (json.containsKey('explanation')) {
-      return AnswerExplanationResponse.fromJson(json);
-    } else {
-      throw FormatException(
+    return switch (json) {
+      _ when json.containsKey('content') => IATaskData.fromJson(
+        json['content'] as Map<String, dynamic>,
+      ),
+      _ when json.containsKey('questions') => QuizResponse.fromJson(json),
+      _ when json.containsKey('explanation') =>
+        AnswerExplanationResponse.fromJson(json),
+      _ when json.containsKey('summary') && json.containsKey('key_facts') =>
+        ExpandedContentResponse.fromJson(json),
+      _ => throw FormatException(
         'No se pudo determinar el tipo de IATaskData. Campos: ${json.keys}',
-      );
-    }
+      ),
+    };
+  }
+}
+
+class ExpandedContentResponse extends IATaskData {
+  final String summary;
+  final List<String> keyFacts;
+  final String funFact;
+  final List<HistoricalEvent> events;
+  final List<HistoricalFigure> figures;
+
+  const ExpandedContentResponse({
+    required this.summary,
+    required this.keyFacts,
+    required this.funFact,
+    required this.events,
+    required this.figures,
+  });
+
+  factory ExpandedContentResponse.fromJson(Map<String, dynamic> json) {
+    return ExpandedContentResponse(
+      summary: json['summary'] as String,
+      keyFacts: (json['key_facts'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      funFact: json['fun_fact'] as String,
+      events:
+          (json['events'] as List<dynamic>?)
+              ?.map((e) => HistoricalEvent.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      figures:
+          (json['figures'] as List<dynamic>?)
+              ?.map((e) => HistoricalFigure.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
   }
 }
 

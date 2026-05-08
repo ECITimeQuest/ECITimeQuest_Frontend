@@ -5,14 +5,14 @@ import 'package:flutter_app/core/widgets/app_toast.dart';
 import 'package:flutter_app/features/learning/data/models/responses/submit_answer_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/learning_session_response.dart';
 import 'package:flutter_app/features/learning/presentation/providers/quiz_notifier.dart';
-import 'package:flutter_app/features/learning/presentation/providers/ia_controller.dart';
+import 'package:flutter_app/features/learning/presentation/providers/ia_notifier.dart';
 import 'package:flutter_app/features/learning/presentation/widgets/quiz_progress_header.dart';
 import 'package:flutter_app/features/learning/presentation/widgets/quiz_options_list.dart';
 import 'package:flutter_app/features/learning/presentation/widgets/feedback_modal.dart';
 import 'package:flutter_app/features/learning/presentation/widgets/quiz_summary_modal.dart';
 import 'package:flutter_app/features/home/presentation/providers/navigation_provider.dart';
 import 'package:flutter_app/features/learning/data/models/responses/ia_task_data.dart';
-import 'package:flutter_app/features/learning/presentation/providers/learning_controller.dart';
+import 'package:flutter_app/features/learning/presentation/providers/learning_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class QuizPage extends ConsumerStatefulWidget {
@@ -173,6 +173,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
             final quizState = ref.read(quizNotifierProvider);
             if (quizState == null) {
               AppToast.error("No se pudo finalizar la sesión correctamente.");
+              ref.read(homeOverlayProvider.notifier).state = null;
               ref.read(navigationIndexProvider.notifier).state = 0;
             }
           }
@@ -200,6 +201,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
         onFinish: () {
           Navigator.pop(context);
           ref.read(quizNotifierProvider.notifier).reset();
+          ref.read(homeOverlayProvider.notifier).state = null;
           ref.read(navigationIndexProvider.notifier).state = 0;
         },
       ),

@@ -1,7 +1,37 @@
+import 'package:flutter_app/features/learning/data/models/historical_event.dart';
+import 'package:flutter_app/features/learning/data/models/historical_figure.dart';
+
 sealed class IATaskContext {
   const IATaskContext();
 
   Map<String, dynamic> toJson();
+}
+
+class ContentExpansionContext extends IATaskContext {
+  final String topicName;
+  final String topicDescription;
+  final String periodName;
+  final List<HistoricalEvent> events;
+  final List<HistoricalFigure> figures;
+
+  const ContentExpansionContext({
+    required this.topicName,
+    required this.topicDescription,
+    required this.periodName,
+    required this.figures,
+    required this.events,
+  });
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'topic_name': topicName,
+      'topic_description': topicDescription,
+      'period_name': periodName,
+      'figures': figures.map((e) => e.toJson()).toList(),
+      'events': events.map((e) => e.toJson()).toList(),
+    };
+  }
 }
 
 class QuizContext extends IATaskContext {

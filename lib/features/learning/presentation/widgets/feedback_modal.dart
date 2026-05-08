@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
 import 'package:flutter_app/core/widgets/app_button.dart';
 import 'package:flutter_app/features/learning/data/models/responses/submit_answer_response.dart';
-import 'package:flutter_app/features/learning/presentation/providers/ia_controller.dart';
+import 'package:flutter_app/features/learning/presentation/providers/ia_notifier.dart';
 import 'package:flutter_app/features/learning/presentation/widgets/ia_explanation_section.dart';
 import 'package:flutter_app/features/learning/presentation/widgets/reward_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
