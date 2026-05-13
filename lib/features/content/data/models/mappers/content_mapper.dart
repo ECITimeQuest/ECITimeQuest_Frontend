@@ -1,8 +1,8 @@
-import '../historical_event.dart';
-import '../historical_figure.dart';
-import '../requests/ia_task_context.dart';
-import '../responses/ia_task_data.dart';
-import '../responses/topic_ia_context_response.dart';
+import 'package:flutter_app/features/content/data/models/historical_event.dart';
+import 'package:flutter_app/features/content/data/models/historical_figure.dart';
+import 'package:flutter_app/features/content/data/models/responses/topic_ia_context_response.dart';
+import 'package:flutter_app/features/ia/data/models/requests/ia_task_context.dart';
+import 'package:flutter_app/features/ia/data/models/responses/ia_task_data.dart';
 
 extension TopicAIContextMapper on TopicAIContextResponse {
   ContentExpansionContext toContentExpansionContext() {

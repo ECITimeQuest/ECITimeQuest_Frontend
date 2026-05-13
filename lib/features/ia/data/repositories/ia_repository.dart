@@ -1,6 +1,6 @@
-import 'package:flutter_app/features/learning/data/datasources/ia_datasource.dart';
-import 'package:flutter_app/features/learning/data/models/requests/ia_task_request.dart';
-import 'package:flutter_app/features/learning/data/models/responses/ia_task_response.dart';
+import 'package:flutter_app/features/ia/data/datasources/ia_datasource.dart';
+import 'package:flutter_app/features/ia/data/models/requests/ia_task_request.dart';
+import 'package:flutter_app/features/ia/data/models/responses/ia_task_response.dart';
 
 class IARepository {
   final IADataSource _iaDataSource;

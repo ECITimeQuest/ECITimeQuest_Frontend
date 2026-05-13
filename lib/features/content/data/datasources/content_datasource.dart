@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_app/core/network/api_config.dart';
 import 'package:flutter_app/core/network/dio_exception_mapper.dart';
-import 'package:flutter_app/features/learning/data/models/responses/historical_period_response.dart';
-import 'package:flutter_app/features/learning/data/models/responses/topic_response.dart';
-import 'package:flutter_app/features/learning/data/models/responses/topic_ia_context_response.dart';
+import 'package:flutter_app/features/content/data/models/responses/historical_period_response.dart';
+import 'package:flutter_app/features/content/data/models/responses/topic_response.dart';
+import 'package:flutter_app/features/content/data/models/responses/topic_ia_context_response.dart';
 
 class ContentDataSource {
   final Dio _dio;

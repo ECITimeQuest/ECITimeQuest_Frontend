@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
 import 'package:flutter_app/core/widgets/reinforcement_card.dart';
-import 'package:flutter_app/features/learning/data/models/responses/ia_task_data.dart';
-import 'package:flutter_app/features/learning/data/models/responses/ia_task_response.dart';
+import 'package:flutter_app/features/ia/data/models/responses/ia_task_data.dart';
+import 'package:flutter_app/features/ia/data/models/responses/ia_task_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class IAExplanationSection extends StatelessWidget {

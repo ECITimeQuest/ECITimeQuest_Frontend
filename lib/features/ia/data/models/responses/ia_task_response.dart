@@ -1,5 +1,5 @@
-import 'package:flutter_app/features/learning/data/models/enums/task_status.dart';
-import 'ia_task_data.dart';
+import 'package:flutter_app/features/ia/data/models/enums/task_status.dart';
+import 'package:flutter_app/features/ia/data/models/responses/ia_task_data.dart';
 
 class IATaskResponse {
   final TaskStatus taskStatus;

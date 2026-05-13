@@ -5,13 +5,13 @@ import 'package:flutter_app/core/widgets/app_toast.dart';
 import 'package:flutter_app/features/learning/data/models/responses/submit_answer_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/learning_session_response.dart';
 import 'package:flutter_app/features/learning/presentation/providers/quiz_notifier.dart';
-import 'package:flutter_app/features/learning/presentation/providers/ia_notifier.dart';
+import 'package:flutter_app/features/ia/presentation/providers/ia_notifier.dart';
 import 'package:flutter_app/features/learning/presentation/widgets/quiz_progress_header.dart';
 import 'package:flutter_app/features/learning/presentation/widgets/quiz_options_list.dart';
 import 'package:flutter_app/features/learning/presentation/widgets/feedback_modal.dart';
 import 'package:flutter_app/features/learning/presentation/widgets/quiz_summary_modal.dart';
 import 'package:flutter_app/features/home/presentation/providers/navigation_provider.dart';
-import 'package:flutter_app/features/learning/data/models/responses/ia_task_data.dart';
+import 'package:flutter_app/features/ia/data/models/responses/ia_task_data.dart';
 import 'package:flutter_app/features/learning/presentation/providers/learning_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
