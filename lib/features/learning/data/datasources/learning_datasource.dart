@@ -6,6 +6,7 @@ import 'package:flutter_app/features/learning/data/models/requests/start_session
 import 'package:flutter_app/features/learning/data/models/requests/submit_answer_request.dart';
 import 'package:flutter_app/features/learning/data/models/responses/learning_session_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/submit_answer_response.dart';
+import 'package:flutter_app/features/learning/data/models/responses/user_progress_response.dart';
 
 class LearningDataSource {
   final Dio _dio;
@@ -50,6 +51,15 @@ class LearningDataSource {
         data: request.toJson(),
       );
       return LearningSessionResponse.fromJson(response.data);
+    } on DioException catch (exception) {
+      throw _exceptionMapper.map(exception);
+    }
+  }
+
+  Future<UserProgressResponse> getUserProgress() async {
+    try {
+      final response = await _dio.get(ApiConfig.userProgressPath);
+      return UserProgressResponse.fromJson(response.data);
     } on DioException catch (exception) {
       throw _exceptionMapper.map(exception);
     }

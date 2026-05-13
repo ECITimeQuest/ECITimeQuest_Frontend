@@ -11,6 +11,7 @@ import 'package:flutter_app/features/learning/presentation/providers/ia_notifier
 import 'package:flutter_app/features/learning/presentation/providers/learning_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_app/features/learning/presentation/providers/user_progress_notifier.dart';
 
 import 'quiz_state.dart';
 
@@ -107,6 +108,8 @@ class QuizNotifier extends StateNotifier<QuizState?> {
         totalResponseTimeMs: currentState.totalResponseTimeMs + responseTimeMs,
       );
 
+      ref.read(userProgressProvider.notifier).updateFromAnswer(response);
+
       if (!isCorrect) {
         await _requestExplanation(question, currentState.selectedIndex!);
       }
@@ -142,6 +145,8 @@ class QuizNotifier extends StateNotifier<QuizState?> {
       final summary = await ref
           .read(learningControllerProvider.notifier)
           .finishSession(request, currentState.sessionId);
+
+      ref.read(userProgressProvider.notifier).getUserProgress();
 
       final result = {
         'summary': summary,

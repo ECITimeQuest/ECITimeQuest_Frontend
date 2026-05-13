@@ -46,12 +46,9 @@ class LearningNotifier extends AsyncNotifier<dynamic>
       startMessage: 'Finalizando sesión...',
       successMessage: 'Sesión finalizada exitosamente',
       errorMessage: 'ERROR al finalizar sesión',
-      action:
-          () => ref.read(learningRepositoryProvider).finishSession(
-            request,
-            sessionId,
-          ),
+      action: () => ref
+          .read(learningRepositoryProvider)
+          .finishSession(request, sessionId),
     );
   }
 }
-
