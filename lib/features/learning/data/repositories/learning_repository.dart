@@ -4,6 +4,7 @@ import 'package:flutter_app/features/learning/data/models/requests/start_session
 import 'package:flutter_app/features/learning/data/models/requests/submit_answer_request.dart';
 import 'package:flutter_app/features/learning/data/models/responses/learning_session_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/submit_answer_response.dart';
+import 'package:flutter_app/features/learning/data/models/responses/user_progress_response.dart';
 
 class LearningRepository {
   final LearningDataSource _dataSource;
@@ -23,5 +24,9 @@ class LearningRepository {
     String sessionId,
   ) {
     return _dataSource.finishSession(request, sessionId);
+  }
+
+  Future<UserProgressResponse> getUserProgress() {
+    return _dataSource.getUserProgress();
   }
 }

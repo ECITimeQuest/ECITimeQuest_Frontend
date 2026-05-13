@@ -1,7 +1,7 @@
 class ApiConfig {
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://192.168.0.9:8000',
+    defaultValue: 'http://192.168.0.8:8000',
   );
 
   static const Duration connectTimeout = Duration(seconds: 15);
@@ -16,6 +16,7 @@ class ApiConfig {
   static String iaTaskPath(String taskId) => '/ai/task/$taskId';
 
   // Learning
+  static const String userProgressPath = '/learning/progress';
   static const String startSessionPath = '/learning/sessions/start';
   static String submitAnswerPath(String sessionId) =>
       '/learning/sessions/$sessionId/answers';

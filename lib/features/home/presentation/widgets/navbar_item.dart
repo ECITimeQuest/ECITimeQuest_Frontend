@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_app/features/learning/presentation/providers/user_progress_notifier.dart';
 
-class NavbarItem extends StatelessWidget {
+class NavbarItem extends ConsumerWidget {
   const NavbarItem({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final progressState = ref.watch(userProgressProvider);
+    final progress = progressState.valueOrNull;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
       child: Row(
         spacing: 15,
-        children: const [
+        children: [
           _NavbarStatItem(
-            value: '5',
+            value: progress?.streakDay.toString() ?? '0',
             icon: Icons.local_fire_department,
             iconColor: AppColors.fire,
           ),
           _NavbarStatItem(
-            value: '3',
+            value: progress?.lives.toString() ?? '5',
             icon: Icons.favorite,
             iconColor: AppColors.heart,
           ),
           _NavbarStatItem(
-            value: '120',
+            value: progress?.coins.toString() ?? '0',
             icon: Icons.monetization_on,
             iconColor: AppColors.tertiary,
           ),
