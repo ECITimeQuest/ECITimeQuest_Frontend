@@ -1,5 +1,5 @@
-import 'package:flutter_app/features/learning/data/models/enums/task_type.dart';
-import 'package:flutter_app/features/learning/data/models/requests/ia_task_context.dart';
+import 'package:flutter_app/features/ia/data/models/enums/task_type.dart';
+import 'package:flutter_app/features/ia/data/models/requests/ia_task_context.dart';
 
 class IATaskRequest {
   final TaskType taskType;

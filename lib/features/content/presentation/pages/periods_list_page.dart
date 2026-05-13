@@ -3,9 +3,9 @@ import 'package:flutter_app/core/theme/app_colors.dart';
 import 'package:flutter_app/core/utils/error_handler.dart';
 import 'package:flutter_app/core/widgets/padded_card.dart';
 import 'package:flutter_app/features/home/presentation/providers/navigation_provider.dart';
-import 'package:flutter_app/features/learning/data/models/responses/historical_period_response.dart';
-import 'package:flutter_app/features/learning/presentation/pages/topics_list_page.dart';
-import 'package:flutter_app/features/learning/presentation/providers/content_notifier.dart';
+import 'package:flutter_app/features/content/data/models/responses/historical_period_response.dart';
+import 'package:flutter_app/features/content/presentation/pages/topics_list_page.dart';
+import 'package:flutter_app/features/content/presentation/providers/content_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PeriodsListPage extends ConsumerStatefulWidget {

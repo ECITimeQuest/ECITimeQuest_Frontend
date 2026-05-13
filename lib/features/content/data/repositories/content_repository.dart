@@ -1,7 +1,7 @@
-import 'package:flutter_app/features/learning/data/datasources/content_datasource.dart';
-import 'package:flutter_app/features/learning/data/models/responses/historical_period_response.dart';
-import 'package:flutter_app/features/learning/data/models/responses/topic_response.dart';
-import 'package:flutter_app/features/learning/data/models/responses/topic_ia_context_response.dart';
+import 'package:flutter_app/features/content/data/datasources/content_datasource.dart';
+import 'package:flutter_app/features/content/data/models/responses/historical_period_response.dart';
+import 'package:flutter_app/features/content/data/models/responses/topic_response.dart';
+import 'package:flutter_app/features/content/data/models/responses/topic_ia_context_response.dart';
 
 class ContentRepository {
   final ContentDataSource _contentDataSource;

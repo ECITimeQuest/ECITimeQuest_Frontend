@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_app/core/network/api_config.dart';
 import 'package:flutter_app/core/network/dio_exception_mapper.dart';
-import 'package:flutter_app/features/learning/data/models/requests/ia_task_request.dart';
-import 'package:flutter_app/features/learning/data/models/responses/ia_task_response.dart';
+import 'package:flutter_app/features/ia/data/models/requests/ia_task_request.dart';
+import 'package:flutter_app/features/ia/data/models/responses/ia_task_response.dart';
 
 class IADataSource {
   final Dio _dio;

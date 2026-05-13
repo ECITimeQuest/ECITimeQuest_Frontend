@@ -1,8 +1,8 @@
 import 'package:flutter_app/core/utils/task_runner_mixin.dart';
-import 'package:flutter_app/features/learning/data/models/responses/historical_period_response.dart';
-import 'package:flutter_app/features/learning/data/models/responses/topic_response.dart';
-import 'package:flutter_app/features/learning/data/models/responses/topic_ia_context_response.dart';
-import 'package:flutter_app/features/learning/data/providers/content_provider.dart';
+import 'package:flutter_app/features/content/data/models/responses/historical_period_response.dart';
+import 'package:flutter_app/features/content/data/models/responses/topic_response.dart';
+import 'package:flutter_app/features/content/data/models/responses/topic_ia_context_response.dart';
+import 'package:flutter_app/features/content/data/providers/content_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final contentControllerProvider =

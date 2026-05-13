@@ -1,8 +1,8 @@
 import 'package:flutter_app/core/utils/task_runner_mixin.dart';
-import 'package:flutter_app/features/learning/data/models/requests/ia_task_request.dart';
-import 'package:flutter_app/features/learning/data/models/enums/task_status.dart';
-import 'package:flutter_app/features/learning/data/models/responses/ia_task_response.dart';
-import 'package:flutter_app/features/learning/data/providers/ia_provider.dart';
+import 'package:flutter_app/features/ia/data/models/requests/ia_task_request.dart';
+import 'package:flutter_app/features/ia/data/models/enums/task_status.dart';
+import 'package:flutter_app/features/ia/data/models/responses/ia_task_response.dart';
+import 'package:flutter_app/features/ia/data/providers/ia_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final iaProvider = AsyncNotifierProvider<IANotifier, IATaskResponse?>(

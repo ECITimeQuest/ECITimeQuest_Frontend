@@ -1,5 +1,5 @@
-import 'package:flutter_app/features/learning/data/models/historical_event.dart';
-import 'package:flutter_app/features/learning/data/models/historical_figure.dart';
+import 'package:flutter_app/features/content/data/models/historical_event.dart';
+import 'package:flutter_app/features/content/data/models/historical_figure.dart';
 
 sealed class IATaskContext {
   const IATaskContext();

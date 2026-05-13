@@ -1,6 +1,6 @@
-import '../quiz_question.dart';
-import '../historical_event.dart';
-import '../historical_figure.dart';
+import 'package:flutter_app/features/content/data/models/historical_event.dart';
+import 'package:flutter_app/features/content/data/models/historical_figure.dart';
+import 'package:flutter_app/features/learning/data/models/quiz_question.dart';
 
 sealed class IATaskData {
   const IATaskData();

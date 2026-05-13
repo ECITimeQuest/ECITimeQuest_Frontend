@@ -4,7 +4,7 @@ import 'package:flutter_app/features/home/presentation/pages/home_content.dart';
 import 'package:flutter_app/features/home/presentation/providers/navigation_provider.dart';
 import 'package:flutter_app/features/home/presentation/widgets/bottom_navbar.dart';
 import 'package:flutter_app/features/home/presentation/widgets/navbar_item.dart';
-import 'package:flutter_app/features/learning/presentation/pages/periods_list_page.dart';
+import 'package:flutter_app/features/content/presentation/pages/periods_list_page.dart';
 import 'package:flutter_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
