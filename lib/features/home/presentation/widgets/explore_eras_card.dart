@@ -1,14 +1,17 @@
 import 'package:avatar_stack/animated_avatar_stack.dart';
 import 'package:avatar_stack/positions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
+import 'package:flutter_app/core/widgets/app_button.dart';
 import 'package:flutter_app/core/widgets/padded_card.dart';
+import 'package:flutter_app/features/home/presentation/providers/navigation_provider.dart';
 
-class ExploreErasCard extends StatelessWidget {
+class ExploreErasCard extends ConsumerWidget {
   const ExploreErasCard({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return PaddedCard(
       color: AppColors.surfaceVariant,
       child: Column(
@@ -25,7 +28,7 @@ class ExploreErasCard extends StatelessWidget {
               ),
             ],
           ),
-          Text(
+          const Text(
             "Sigue tu rastro por la ilustración o salta a la era de los Samuráis",
           ),
           AnimatedAvatarStack(
@@ -52,6 +55,16 @@ class ExploreErasCard extends StatelessWidget {
             avatars: List.generate(
               15,
               (n) => NetworkImage('https://i.pravatar.cc/150?img=$n'),
+            ),
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            width: double.infinity,
+            child: AppButton(
+              label: "¡Vamos!",
+              onPressed: () {
+                ref.read(navigationIndexProvider.notifier).state = 1;
+              },
             ),
           ),
         ],

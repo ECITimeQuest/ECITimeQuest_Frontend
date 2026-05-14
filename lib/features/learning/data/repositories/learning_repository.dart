@@ -4,6 +4,7 @@ import 'package:flutter_app/features/learning/data/models/requests/start_session
 import 'package:flutter_app/features/learning/data/models/requests/submit_answer_request.dart';
 import 'package:flutter_app/features/learning/data/models/responses/concept_gap_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/era_mastery_item_response.dart';
+import 'package:flutter_app/features/learning/data/models/responses/home_summary_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/learning_session_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/submit_answer_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/user_badge_response.dart';
@@ -43,5 +44,9 @@ class LearningRepository {
 
   Future<List<EraMasteryItemResponse>> getEraMastery() {
     return _dataSource.getEraMastery();
+  }
+
+  Future<HomeSummaryResponse> getHomeSummary() {
+    return _dataSource.getHomeSummary();
   }
 }

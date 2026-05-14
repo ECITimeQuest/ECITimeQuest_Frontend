@@ -25,6 +25,7 @@ class ApiConfig {
   static String badgesPath = '/learning/badges';
   static String conceptGapsPath = '/learning/gaps';
   static String eraMasteryPath = '/learning/periods/mastery';
+  static String homeSummaryPath = '/learning/home-summary';
 
   // Content
   static String getIAContext(String topicId) =>

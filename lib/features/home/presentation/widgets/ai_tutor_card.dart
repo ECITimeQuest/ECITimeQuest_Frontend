@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
 import 'package:flutter_app/core/widgets/padded_card.dart';
+import 'package:flutter_app/features/home/presentation/providers/navigation_provider.dart';
 
-class AiTutorCard extends StatelessWidget {
+class AiTutorCard extends ConsumerWidget {
   const AiTutorCard({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return PaddedCard(
       color: AppColors.secondaryContainer,
       child: Row(
@@ -25,30 +27,37 @@ class AiTutorCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  '"¡Hola!, ¿listo para descubrir el renacimiento?"',
+                const Text(
+                  '"¡Hola!, Haz un seguimiento de tu progreso y debilidades"',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
-                Row(
-                  spacing: 8,
-                  children: [
-                    Text(
-                      "Continuar charla",
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: AppColors.secondary,
-                        fontWeight: FontWeight.bold,
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    ref.read(navigationIndexProvider.notifier).state = 2;
+                  },
+                  child: Row(
+                    spacing: 8,
+                    children: [
+                      Text(
+                        "Hacer seguimiento",
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(
+                              color: AppColors.secondary,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_outlined,
-                      color: AppColors.secondary,
-                      size: 12,
-                    ),
-                  ],
+                      const Icon(
+                        Icons.arrow_forward_outlined,
+                        color: AppColors.secondary,
+                        size: 12,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

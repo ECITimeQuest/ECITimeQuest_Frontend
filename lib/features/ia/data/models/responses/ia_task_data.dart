@@ -1,56 +1,118 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_app/features/content/data/models/historical_event.dart';
 import 'package:flutter_app/features/content/data/models/historical_figure.dart';
 import 'package:flutter_app/features/learning/data/models/quiz_question.dart';
 
-part 'ia_task_data.freezed.dart';
-part 'ia_task_data.g.dart';
+sealed class IATaskData {
+  const IATaskData();
 
-@Freezed(unionKey: 'task_type')
-sealed class IATaskData with _$IATaskData {
-  const IATaskData._();
+  factory IATaskData.fromJson(Map<String, dynamic> json) {
+    return switch (json) {
+      _ when json.containsKey('content') => IATaskData.fromJson(
+        json['content'] as Map<String, dynamic>,
+      ),
+      _ when json.containsKey('questions') => QuizResponse.fromJson(json),
+      _
+          when json.containsKey('concept') &&
+              json.containsKey('explanation') &&
+              json.containsKey('severity') =>
+        GapAnalysisResponse.fromJson(json),
+      _ when json.containsKey('explanation') =>
+        AnswerExplanationResponse.fromJson(json),
+      _ when json.containsKey('summary') && json.containsKey('key_facts') =>
+        ExpandedContentResponse.fromJson(json),
+      _ => throw FormatException(
+        'No se pudo determinar el tipo de IATaskData. Campos: ${json.keys}',
+      ),
+    };
+  }
+}
 
-  @FreezedUnionValue('content_expansion')
-  const factory IATaskData.expandedContentResponse({
-    required String summary,
-    @JsonKey(name: 'key_facts') required List<String> keyFacts,
-    @JsonKey(name: 'fun_fact') required String funFact,
-    @Default([]) List<HistoricalEvent> events,
-    @Default([]) List<HistoricalFigure> figures,
-  }) = ExpandedContentResponse;
+class ExpandedContentResponse extends IATaskData {
+  final String summary;
+  final List<String> keyFacts;
+  final String funFact;
+  final List<HistoricalEvent> events;
+  final List<HistoricalFigure> figures;
 
-  @FreezedUnionValue('quiz_generation')
-  const factory IATaskData.quizResponse({
-    required List<QuizQuestion> questions,
-  }) = QuizResponse;
+  const ExpandedContentResponse({
+    required this.summary,
+    required this.keyFacts,
+    required this.funFact,
+    required this.events,
+    required this.figures,
+  });
 
-  @FreezedUnionValue('answer_explanation')
-  const factory IATaskData.answerExplanationResponse({
-    required String explanation,
-    @JsonKey(name: 'key_concept') required String keyConcept,
-    required String tip,
-  }) = AnswerExplanationResponse;
+  factory ExpandedContentResponse.fromJson(Map<String, dynamic> json) {
+    return ExpandedContentResponse(
+      summary: json['summary'] as String,
+      keyFacts: (json['key_facts'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      funFact: json['fun_fact'] as String,
+      events:
+          (json['events'] as List<dynamic>?)
+              ?.map((e) => HistoricalEvent.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      figures:
+          (json['figures'] as List<dynamic>?)
+              ?.map((e) => HistoricalFigure.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+  }
+}
 
-  @FreezedUnionValue('gap_analysis')
-  const factory IATaskData.gapAnalysisResponse({
-    required String concept,
-    required String explanation,
-    required String severity,
-  }) = GapAnalysisResponse;
+class QuizResponse extends IATaskData {
+  final List<QuizQuestion> questions;
 
-  factory IATaskData.fromJson(Map<String, dynamic> json) = _$IATaskDataFromJson;
-  static IATaskData parseApiData(Map<String, dynamic> json) {
-    // If the JSON contains a 'content' field, flatten it so the fields
-    // match the ExpandedContentResponse factory above.
-    // We also make sure not to lose 'task_type'.
-    if (json.containsKey('content') &&
-        json['content'] is Map<String, dynamic>) {
-      final inner = json['content'] as Map<String, dynamic>;
-      final flat = Map<String, dynamic>.from(json);
-      flat.addAll(inner);
-      flat.remove('content');
-      return IATaskData.fromJson(flat);
-    }
-    return IATaskData.fromJson(json);
+  const QuizResponse({required this.questions});
+
+  factory QuizResponse.fromJson(Map<String, dynamic> json) {
+    return QuizResponse(
+      questions: (json['questions'] as List<dynamic>)
+          .map((e) => QuizQuestion.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+}
+
+class AnswerExplanationResponse extends IATaskData {
+  final String explanation;
+  final String keyConcept;
+  final String tip;
+
+  const AnswerExplanationResponse({
+    required this.explanation,
+    required this.keyConcept,
+    required this.tip,
+  });
+
+  factory AnswerExplanationResponse.fromJson(Map<String, dynamic> json) {
+    return AnswerExplanationResponse(
+      explanation: json['explanation'] as String,
+      keyConcept: json['key_concept'] as String,
+      tip: json['tip'] as String,
+    );
+  }
+}
+
+class GapAnalysisResponse extends IATaskData {
+  final String concept;
+  final String explanation;
+  final String severity;
+
+  const GapAnalysisResponse({
+    required this.concept,
+    required this.explanation,
+    required this.severity,
+  });
+
+  factory GapAnalysisResponse.fromJson(Map<String, dynamic> json) {
+    return GapAnalysisResponse(
+      concept: json['concept'] as String,
+      explanation: json['explanation'] as String,
+      severity: json['severity'] as String,
+    );
   }
 }

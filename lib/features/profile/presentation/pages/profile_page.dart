@@ -73,7 +73,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             },
           ),
         ),
-        const SizedBox(height: 24),
       ],
     );
   }
