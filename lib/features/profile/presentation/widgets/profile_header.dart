@@ -9,7 +9,10 @@ class ProfileHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userState = ref.watch(authUserProvider);
-    final userName = userState.valueOrNull?.name ?? 'Usuario';
+    final email = userState.valueOrNull?.email;
+    final userName = (email != null && email.contains('@'))
+        ? email.split('@').first
+        : 'Usuario';
 
     return Column(
       children: [
