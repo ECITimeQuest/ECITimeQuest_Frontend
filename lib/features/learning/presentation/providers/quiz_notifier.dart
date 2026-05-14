@@ -12,6 +12,7 @@ import 'package:flutter_app/features/learning/presentation/providers/learning_no
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_app/features/learning/presentation/providers/user_progress_notifier.dart';
+import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
 
 import 'quiz_state.dart';
 
@@ -111,7 +112,10 @@ class QuizNotifier extends StateNotifier<QuizState?> {
       ref.read(userProgressProvider.notifier).updateFromAnswer(response);
 
       if (!isCorrect) {
-        await _requestExplanation(question, currentState.selectedIndex!);
+        final user = ref.read(authUserProvider).valueOrNull;
+        if (user != null && user.subscriptionPlan.isPremium) {
+          await _requestExplanation(question, currentState.selectedIndex!);
+        }
       }
 
       return response;

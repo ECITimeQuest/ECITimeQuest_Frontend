@@ -9,16 +9,28 @@ class ProfileHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userState = ref.watch(authUserProvider);
-    final email = userState.valueOrNull?.email;
-    final userName = (email != null && email.contains('@'))
+    final user = userState.valueOrNull;
+    final isPremium = user?.subscriptionPlan.isPremium ?? false;
+    final email = user?.email;
+    final nameFromUser = user?.name;
+
+    final displayName = (nameFromUser != null && nameFromUser.isNotEmpty)
+        ? nameFromUser
+        : (email != null && email.contains('@'))
         ? email.split('@').first
         : 'Usuario';
 
     return Column(
       children: [
-        _buildAvatar(),
+        _buildAvatar(isPremium),
         const SizedBox(height: 24),
-        Text(userName, style: Theme.of(context).textTheme.titleLarge),
+        Text(
+          displayName,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: isPremium ? AppColors.tertiary : null,
+            fontWeight: isPremium ? FontWeight.bold : null,
+          ),
+        ),
         const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -41,7 +53,7 @@ class ProfileHeader extends ConsumerWidget {
     );
   }
 
-  Widget _buildAvatar() {
+  Widget _buildAvatar(bool isPremium) {
     return Stack(
       alignment: Alignment.bottomRight,
       children: [
@@ -64,19 +76,24 @@ class ProfileHeader extends ConsumerWidget {
             child: Icon(Icons.person_rounded, size: 80, color: Colors.white54),
           ),
         ),
-        Positioned(
-          bottom: 2,
-          right: 2,
-          child: Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: AppColors.tertiary,
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 3),
+        if (isPremium)
+          Positioned(
+            bottom: 2,
+            right: 2,
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: AppColors.tertiary,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 3),
+              ),
+              child: const Icon(
+                Icons.verified,
+                color: Colors.black87,
+                size: 18,
+              ),
             ),
-            child: const Icon(Icons.verified, color: Colors.black87, size: 18),
           ),
-        ),
       ],
     );
   }

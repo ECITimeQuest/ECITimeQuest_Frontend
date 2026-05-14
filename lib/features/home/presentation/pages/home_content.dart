@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_app/features/home/presentation/widgets/ai_tutor_card.dart';
-import 'package:flutter_app/features/home/presentation/widgets/daily_challenge_card.dart';
 import 'package:flutter_app/features/home/presentation/widgets/explore_eras_card.dart';
 import 'package:flutter_app/features/home/presentation/widgets/mission_state_card.dart';
+import 'package:flutter_app/core/widgets/upgrade_plan_widget.dart';
+import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
 
-class HomeContent extends StatelessWidget {
+class HomeContent extends ConsumerWidget {
   const HomeContent({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authUserProvider).valueOrNull;
+    final isPremium = user != null && user.subscriptionPlan.isPremium;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 30,
@@ -23,9 +28,25 @@ class HomeContent extends StatelessWidget {
             Text("Tu viaje por los siglos continúa"),
           ],
         ),
+        if (isPremium)
+          const UpgradePlanWidget(
+            title: '¡Eres Premium!',
+            message:
+                'Disfruta de contenido personalizado en base a tus debilidades, recibe retroalimentación e indaga sobre tus dificultades libremente con tu IA Tutor.',
+            isDialog: false,
+            showButtons: false,
+          )
+        else
+          const UpgradePlanWidget(
+            title: 'Potencia tu aprendizaje',
+            message:
+                'Mejora a Premium para recibir contenido basado en tus debilidades, obtener retroalimentación e indagar sobre tus dificultades.',
+            isDialog: false,
+            showButtons: true,
+          ),
         MissionStateCard(),
         AiTutorCard(),
-        DailyChallengeCard(),
+        // DailyChallengeCard(),
         ExploreErasCard(),
       ],
     );
