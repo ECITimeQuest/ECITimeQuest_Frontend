@@ -22,6 +22,9 @@ class ApiConfig {
       '/learning/sessions/$sessionId/answers';
   static String finishSessionPath(String sessionId) =>
       '/learning/sessions/$sessionId/finish';
+  static String badgesPath = '/learning/badges';
+  static String conceptGapsPath = '/learning/gaps';
+  static String eraMasteryPath = '/learning/periods/mastery';
 
   // Content
   static String getIAContext(String topicId) =>

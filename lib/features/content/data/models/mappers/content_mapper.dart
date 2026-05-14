@@ -5,8 +5,8 @@ import 'package:flutter_app/features/ia/data/models/requests/ia_task_context.dar
 import 'package:flutter_app/features/ia/data/models/responses/ia_task_data.dart';
 
 extension TopicAIContextMapper on TopicAIContextResponse {
-  ContentExpansionContext toContentExpansionContext() {
-    return ContentExpansionContext(
+  TopicContext toTopicContext() {
+    return TopicContext(
       topicName: topicName,
       topicDescription: topicDescription,
       periodName: periodName,

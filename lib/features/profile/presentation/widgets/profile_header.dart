@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
+import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
 
-class ProfileHeader extends StatelessWidget {
+class ProfileHeader extends ConsumerWidget {
   const ProfileHeader({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userState = ref.watch(authUserProvider);
+    final userName = userState.valueOrNull?.name ?? 'Usuario';
+
     return Column(
       children: [
         _buildAvatar(),
         const SizedBox(height: 24),
-        Text('Julián Valerius', style: Theme.of(context).textTheme.titleLarge),
+        Text(userName, style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -22,7 +27,7 @@ class ProfileHeader extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              'Explorador Renacentista',
+              'Explorador',
               style: Theme.of(
                 context,
               ).textTheme.titleSmall?.copyWith(color: AppColors.secondary),

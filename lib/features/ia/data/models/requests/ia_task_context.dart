@@ -7,14 +7,14 @@ sealed class IATaskContext {
   Map<String, dynamic> toJson();
 }
 
-class ContentExpansionContext extends IATaskContext {
+class TopicContext extends IATaskContext {
   final String topicName;
   final String topicDescription;
   final String periodName;
   final List<HistoricalEvent> events;
   final List<HistoricalFigure> figures;
 
-  const ContentExpansionContext({
+  const TopicContext({
     required this.topicName,
     required this.topicDescription,
     required this.periodName,
@@ -31,6 +31,24 @@ class ContentExpansionContext extends IATaskContext {
       'figures': figures.map((e) => e.toJson()).toList(),
       'events': events.map((e) => e.toJson()).toList(),
     };
+  }
+}
+
+class GapAnalysisContext extends TopicContext {
+  final String targetConcept;
+
+  const GapAnalysisContext({
+    required super.topicName,
+    required super.topicDescription,
+    required super.periodName,
+    required super.figures,
+    required super.events,
+    required this.targetConcept,
+  });
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {...super.toJson(), 'target_concept': targetConcept};
   }
 }
 

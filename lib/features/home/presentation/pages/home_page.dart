@@ -14,7 +14,6 @@ class HomePage extends ConsumerWidget {
   final List<Widget> _pages = const [
     HomeContent(),
     PeriodsListPage(),
-    Placeholder(),
     ProfilePage(),
   ];
 
