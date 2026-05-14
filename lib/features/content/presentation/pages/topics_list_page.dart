@@ -5,6 +5,8 @@ import 'package:flutter_app/core/widgets/app_button.dart';
 import 'package:flutter_app/core/widgets/app_toast.dart';
 import 'package:flutter_app/core/widgets/page_header.dart';
 import 'package:flutter_app/core/widgets/padded_card.dart';
+import 'package:flutter_app/core/widgets/upgrade_plan_widget.dart';
+import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
 import 'package:flutter_app/features/ia/data/models/enums/task_type.dart';
 import 'package:flutter_app/features/content/data/models/mappers/content_mapper.dart';
 import 'package:flutter_app/features/ia/data/models/requests/ia_task_request.dart';
@@ -42,7 +44,23 @@ class _TopicsListPageState extends ConsumerState<TopicsListPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadTopics();
+      _checkPremium();
     });
+  }
+
+  void _checkPremium() {
+    final user = ref.read(authUserProvider).valueOrNull;
+
+    if (user == null || !user.subscriptionPlan.isPremium) {
+      showDialog(
+        context: context,
+        builder: (context) => const UpgradePlanWidget(
+          title: 'Potencia tu aprendizaje',
+          message:
+              'Pásate a Premium si quieres contenido personalizado en base a tus debilidades.',
+        ),
+      );
+    }
   }
 
   Future<void> _loadTopics() async {
@@ -139,6 +157,21 @@ class _TopicCardState extends ConsumerState<TopicCard> {
   ExpandedContentResponse? _expandedContent;
 
   Future<void> _requestContent() async {
+    final user = ref.read(authUserProvider).valueOrNull;
+
+    if (widget.topic.isPremium &&
+        (user == null || !user.subscriptionPlan.isPremium)) {
+      showDialog(
+        context: context,
+        builder: (context) => const UpgradePlanWidget(
+          title: 'Contenido Exclusivo',
+          message:
+              'Este tema es parte de nuestro contenido Premium. Actualiza tu plan para desbloquear lecciones detalladas y profundizar en la historia.',
+        ),
+      );
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });

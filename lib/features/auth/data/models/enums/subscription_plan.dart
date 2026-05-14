@@ -19,4 +19,6 @@ enum SubscriptionPlan {
       SubscriptionPlan.premium => 'premium',
     };
   }
+
+  bool get isPremium => this == SubscriptionPlan.premium;
 }

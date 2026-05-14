@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
 import 'package:flutter_app/core/widgets/reinforcement_card.dart';
+import 'package:flutter_app/core/widgets/upgrade_plan_widget.dart';
+import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
 import 'package:flutter_app/features/learning/presentation/providers/concept_gaps_notifier.dart';
 import 'package:flutter_app/features/learning/data/models/enums/error_type.dart';
 import 'package:flutter_app/features/learning/data/models/responses/concept_gap_response.dart';
@@ -101,6 +103,20 @@ class _InteractiveGapCardState extends ConsumerState<_InteractiveGapCard> {
   bool _isLoading = false;
 
   Future<void> _analyzeGap() async {
+    final user = ref.read(authUserProvider).valueOrNull;
+
+    if (user == null || !user.subscriptionPlan.isPremium) {
+      showDialog(
+        context: context,
+        builder: (context) => const UpgradePlanWidget(
+          title: 'Análisis de IA Tutor',
+          message:
+              'Mejora a Premium para indagar sobre tus vacíos conceptuales y acelerar tu aprendizaje.',
+        ),
+      );
+      return;
+    }
+
     setState(() => _isLoading = true);
     AppToast.info('Analizando vacío conceptual con IA...');
 
