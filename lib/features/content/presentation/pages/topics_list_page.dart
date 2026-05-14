@@ -153,7 +153,7 @@ class _TopicCardState extends ConsumerState<TopicCard> {
       final taskRequest = IATaskRequest(
         taskType: TaskType.contentExpansion,
         referenceId: widget.topic.id,
-        context: contextResponse.toContentExpansionContext(),
+        context: contextResponse.toTopicContext(),
       );
 
       final completedTask = await ref
@@ -259,7 +259,7 @@ class _TopicCardState extends ConsumerState<TopicCard> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(

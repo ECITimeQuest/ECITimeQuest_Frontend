@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
+import 'package:flutter_app/features/learning/presentation/providers/user_progress_notifier.dart';
 
-class ProfileStats extends StatelessWidget {
+class ProfileStats extends ConsumerWidget {
   const ProfileStats({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final progressState = ref.watch(userProgressProvider);
+    final progress = progressState.valueOrNull;
+
+    final level = progress?.level.toString() ?? '-';
+    final streak = progress != null ? '${progress.streakDay} días' : '-';
+    final coins = progress?.coins.toString() ?? '-';
+
     return Column(
       children: [
         _buildStatCard(
@@ -14,7 +23,7 @@ class ProfileStats extends StatelessWidget {
           iconColor: AppColors.primary,
           iconBgColor: AppColors.surfaceContainer,
           title: 'NIVEL',
-          value: '12',
+          value: level,
         ),
         const SizedBox(height: 16),
         _buildStatCard(
@@ -23,7 +32,7 @@ class ProfileStats extends StatelessWidget {
           iconColor: AppColors.fire,
           iconBgColor: AppColors.fireContainer,
           title: 'RACHA DE',
-          value: '15 días',
+          value: streak,
         ),
         const SizedBox(height: 16),
         _buildStatCard(
@@ -32,7 +41,7 @@ class ProfileStats extends StatelessWidget {
           iconColor: AppColors.tertiary,
           iconBgColor: AppColors.tertiaryContainer,
           title: 'TOTAL MONEDAS',
-          value: '450',
+          value: coins,
         ),
       ],
     );

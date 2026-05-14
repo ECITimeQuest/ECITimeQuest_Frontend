@@ -6,12 +6,14 @@ class ReinforcementCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final List<Widget> children;
+  final MainAxisSize mainAxisSize;
 
   const ReinforcementCard({
     super.key,
     required this.title,
     required this.subtitle,
     required this.children,
+    this.mainAxisSize = MainAxisSize.min,
   });
 
   @override
@@ -21,6 +23,7 @@ class ReinforcementCard extends StatelessWidget {
       color: AppColors.secondaryContainer,
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(24)),
       child: Column(
+        mainAxisSize: mainAxisSize,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
