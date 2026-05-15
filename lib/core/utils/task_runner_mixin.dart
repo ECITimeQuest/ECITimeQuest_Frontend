@@ -1,7 +1,10 @@
 import 'dart:developer' as developer;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-mixin TaskRunnerMixin<S> on AsyncNotifier<S> {
+mixin TaskRunnerMixin<S> {
+  AsyncValue<S> get state;
+  set state(AsyncValue<S> value);
+
   Future<T> runTask<T>({
     required String flowName,
     required String startMessage,

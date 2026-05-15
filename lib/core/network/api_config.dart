@@ -28,6 +28,8 @@ class ApiConfig {
   static String conceptGapsPath = '/learning/gaps';
   static String eraMasteryPath = '/learning/periods/mastery';
   static String homeSummaryPath = '/learning/home-summary';
+  static String getTopicProgress(String topicId) =>
+      '/learning/topics/$topicId/progress';
 
   // Content
   static String getIAContext(String topicId) =>

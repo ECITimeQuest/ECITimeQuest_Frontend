@@ -7,6 +7,7 @@ import 'package:flutter_app/features/learning/data/models/responses/era_mastery_
 import 'package:flutter_app/features/learning/data/models/responses/home_summary_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/learning_session_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/submit_answer_response.dart';
+import 'package:flutter_app/features/learning/data/models/responses/topic_progress_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/user_badge_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/user_progress_response.dart';
 
@@ -48,5 +49,9 @@ class LearningRepository {
 
   Future<HomeSummaryResponse> getHomeSummary() {
     return _dataSource.getHomeSummary();
+  }
+
+  Future<TopicProgressResponse> getTopicProgress(String topicId) {
+    return _dataSource.getTopicProgress(topicId);
   }
 }

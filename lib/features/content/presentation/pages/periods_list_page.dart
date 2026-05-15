@@ -42,6 +42,8 @@ class _PeriodsListPageState extends ConsumerState<PeriodsListPage> {
           .read(contentControllerProvider.notifier)
           .listPeriods();
 
+      _sortPeriods(periods);
+
       setState(() {
         _periods = periods;
       });
@@ -54,6 +56,10 @@ class _PeriodsListPageState extends ConsumerState<PeriodsListPage> {
         _isLoading = false;
       });
     }
+  }
+
+  void _sortPeriods(List<HistoricalPeriodResponse> periods) {
+    periods.sort((a, b) => (a.startYear ?? 0).compareTo(b.startYear ?? 0));
   }
 
   void _goToTopics(HistoricalPeriodResponse period) {
