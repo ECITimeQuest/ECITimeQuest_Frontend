@@ -36,4 +36,8 @@ class AuthRepository {
   Future<UserResponse> getMe() {
     return _backendDataSource.getMe();
   }
+
+  Future<UserResponse> updateSubscription(String userId, String plan) {
+    return _backendDataSource.updateSubscription(userId, plan);
+  }
 }
