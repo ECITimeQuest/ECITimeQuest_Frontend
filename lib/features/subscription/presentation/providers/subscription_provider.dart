@@ -20,11 +20,15 @@ class SubscriptionState {
   }
 }
 
-class SubscriptionNotifier extends AsyncNotifier<SubscriptionState> {
+class SubscriptionNotifier extends AutoDisposeAsyncNotifier<SubscriptionState> {
   @override
   Future<SubscriptionState> build() async {
-    final repo = ref.read(authRepositoryProvider);
-    final user = await repo.getMe();
+    final user = await ref.watch(authUserProvider.future);
+
+    if (user == null) {
+      throw Exception('Usuario no autenticado');
+    }
+
     return SubscriptionState(userId: user.id, plan: user.subscriptionPlan);
   }
 
@@ -68,7 +72,7 @@ class SubscriptionNotifier extends AsyncNotifier<SubscriptionState> {
 }
 
 final subscriptionProvider =
-    AsyncNotifierProvider<SubscriptionNotifier, SubscriptionState>(
+    AutoDisposeAsyncNotifierProvider<SubscriptionNotifier, SubscriptionState>(
       SubscriptionNotifier.new,
     );
 

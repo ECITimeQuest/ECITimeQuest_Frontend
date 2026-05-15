@@ -11,11 +11,6 @@ import 'package:flutter_app/features/profile/presentation/widgets/mastery_sectio
 import 'package:flutter_app/features/profile/presentation/widgets/badges_section.dart';
 import 'package:flutter_app/features/profile/presentation/widgets/concept_gaps_section.dart';
 
-import 'package:flutter_app/features/learning/presentation/providers/concept_gaps_notifier.dart';
-import 'package:flutter_app/features/learning/presentation/providers/user_badges_notifier.dart';
-import 'package:flutter_app/features/learning/presentation/providers/era_mastery_notifier.dart';
-import 'package:flutter_app/features/learning/presentation/providers/user_progress_notifier.dart';
-
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
@@ -27,15 +22,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && ref.read(authUserProvider).valueOrNull != null) {
-        ref.read(authUserProvider.notifier).loadMe();
-      }
-      ref.invalidate(userProgressProvider);
-      ref.invalidate(eraMasteryProvider);
-      ref.invalidate(userBadgesProvider);
-      ref.invalidate(conceptGapsProvider);
-    });
   }
 
   @override
