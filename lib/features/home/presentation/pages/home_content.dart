@@ -22,11 +22,6 @@ class _HomeContentState extends ConsumerState<HomeContent> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && ref.read(authUserProvider).valueOrNull != null) {
-        ref.read(authUserProvider.notifier).loadMe();
-      }
-    });
   }
 
   @override
@@ -53,7 +48,7 @@ class _HomeContentState extends ConsumerState<HomeContent> {
           const UpgradePlanWidget(
             title: '¡Eres Premium!',
             message:
-                'Disfruta de contenido personalizado en base a tus debilidades, recibe retroalimentación e indaga sobre tus dificultades libremente con tu IA Tutor.',
+                'Disfruta de vidas ilimitadas, contenido personalizado en base a tus debilidades, recibe retroalimentación e indaga sobre tus dificultades libremente con tu IA Tutor.',
             isDialog: false,
             showButtons: false,
           )
@@ -61,7 +56,7 @@ class _HomeContentState extends ConsumerState<HomeContent> {
           UpgradePlanWidget(
             title: 'Potencia tu aprendizaje',
             message:
-                'Mejora a Premium para recibir contenido basado en tus debilidades, obtener retroalimentación e indagar sobre tus dificultades.',
+                'Mejora a Premium para recibir vidas ilimitadas, contenido basado en tus debilidades, obtener retroalimentación e indagar sobre tus dificultades.',
             isDialog: false,
             showButtons: true,
             onDismiss: () =>

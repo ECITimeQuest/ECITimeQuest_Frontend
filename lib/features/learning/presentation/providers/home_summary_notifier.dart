@@ -11,11 +11,13 @@ final homeSummaryProvider =
 
 class HomeSummaryNotifier extends AsyncNotifier<HomeSummaryResponse?>
     with TaskRunnerMixin<HomeSummaryResponse?> {
+  Future<HomeSummaryResponse?>? _ongoingFetch;
+
   @override
   Future<HomeSummaryResponse?> build() async {
-    final user = ref.watch(authUserProvider);
+    final userId = ref.watch(authUserProvider.select((s) => s.valueOrNull?.id));
 
-    if (user.valueOrNull == null) {
+    if (userId == null) {
       return null;
     }
 
@@ -23,12 +25,23 @@ class HomeSummaryNotifier extends AsyncNotifier<HomeSummaryResponse?>
   }
 
   Future<HomeSummaryResponse> getHomeSummary() async {
-    return runTask(
+    if (_ongoingFetch != null) {
+      return await _ongoingFetch as HomeSummaryResponse;
+    }
+
+    _ongoingFetch = runTask(
       flowName: 'HomeSummaryFlow',
       startMessage: 'Obteniendo resumen del inicio...',
       successMessage: 'Resumen del inicio obtenido exitosamente',
       errorMessage: 'ERROR al obtener resumen del inicio',
       action: () => ref.read(learningRepositoryProvider).getHomeSummary(),
     );
+
+    try {
+      final result = await _ongoingFetch;
+      return result!;
+    } finally {
+      _ongoingFetch = null;
+    }
   }
 }

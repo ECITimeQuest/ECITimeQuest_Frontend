@@ -11,23 +11,30 @@ final userBadgesProvider =
 
 class UserBadgesNotifier extends AsyncNotifier<List<UserBadgeResponse>>
     with TaskRunnerMixin<List<UserBadgeResponse>> {
+  Future<List<UserBadgeResponse>>? _ongoingFetch;
+
   @override
   Future<List<UserBadgeResponse>> build() async {
-    final user = ref.watch(authUserProvider.select((s) => s.valueOrNull));
-    if (user == null) {
-      return [];
-    }
-
+    final userId = ref.watch(authUserProvider.select((s) => s.valueOrNull?.id));
+    if (userId == null) return [];
     return getUserBadges();
   }
 
   Future<List<UserBadgeResponse>> getUserBadges() async {
-    return runTask(
+    if (_ongoingFetch != null) return _ongoingFetch!;
+
+    _ongoingFetch = runTask(
       flowName: 'UserBadgesFlow',
       startMessage: 'Obteniendo insignias del usuario...',
       successMessage: 'Insignias obtenidas exitosamente',
       errorMessage: 'ERROR al obtener insignias',
       action: () => ref.read(learningRepositoryProvider).getUserBadges(),
     );
+
+    try {
+      return await _ongoingFetch!;
+    } finally {
+      _ongoingFetch = null;
+    }
   }
 }
