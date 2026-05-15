@@ -28,6 +28,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && ref.read(authUserProvider).valueOrNull != null) {
+        ref.read(authUserProvider.notifier).loadMe();
+      }
       ref.invalidate(userProgressProvider);
       ref.invalidate(eraMasteryProvider);
       ref.invalidate(userBadgesProvider);

@@ -38,25 +38,37 @@ class IANotifier extends AsyncNotifier<IATaskResponse?>
     String taskId, {
     int maxRetries = 10,
   }) async {
+    state = const AsyncLoading<IATaskResponse?>();
+
     int retries = 0;
-    IATaskResponse response;
-
     while (retries < maxRetries) {
-      response = await getIATask(taskId);
+      try {
+        final response = await ref.read(iaRepositoryProvider).getIATask(taskId);
 
-      if (response.taskStatus == TaskStatus.completed) {
-        return response;
-      }
+        if (response.taskStatus == TaskStatus.completed) {
+          state = AsyncData(response);
+          return response;
+        }
 
-      if (response.taskStatus == TaskStatus.failed) {
-        throw Exception(response.error ?? 'La tarea de IA falló');
+        if (response.taskStatus == TaskStatus.failed) {
+          final error = response.error ?? 'La tarea de IA falló';
+          state = AsyncError(error, StackTrace.current);
+          throw Exception(error);
+        }
+      } catch (e) {
+        if (retries >= maxRetries - 1) {
+          state = AsyncError(e, StackTrace.current);
+          rethrow;
+        }
       }
 
       await Future.delayed(const Duration(seconds: 2));
       retries++;
     }
 
-    throw Exception('Tiempo de espera agotado para la tarea de IA');
+    const error = 'Tiempo de espera agotado para la tarea de IA';
+    state = AsyncError(error, StackTrace.current);
+    throw Exception(error);
   }
 
   Future<IATaskResponse> requestAndPollTask<T>(

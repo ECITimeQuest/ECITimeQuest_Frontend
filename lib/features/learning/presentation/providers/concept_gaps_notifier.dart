@@ -13,9 +13,8 @@ class ConceptGapsNotifier extends AsyncNotifier<List<ConceptGapResponse>>
     with TaskRunnerMixin<List<ConceptGapResponse>> {
   @override
   Future<List<ConceptGapResponse>> build() async {
-    final user = ref.watch(authUserProvider);
-
-    if (user.valueOrNull == null) {
+    final user = ref.watch(authUserProvider.select((s) => s.valueOrNull));
+    if (user == null) {
       return [];
     }
 

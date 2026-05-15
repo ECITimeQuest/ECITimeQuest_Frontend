@@ -13,9 +13,8 @@ class EraMasteryNotifier extends AsyncNotifier<List<EraMasteryItemResponse>>
     with TaskRunnerMixin<List<EraMasteryItemResponse>> {
   @override
   Future<List<EraMasteryItemResponse>> build() async {
-    final user = ref.watch(authUserProvider);
-
-    if (user.valueOrNull == null) {
+    final user = ref.watch(authUserProvider.select((s) => s.valueOrNull));
+    if (user == null) {
       return [];
     }
 

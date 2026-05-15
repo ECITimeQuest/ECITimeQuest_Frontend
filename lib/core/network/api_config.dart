@@ -1,7 +1,7 @@
 class ApiConfig {
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://192.168.100.3:8000',
+    defaultValue: 'http://localhost:8000',
   );
 
   static const Duration connectTimeout = Duration(seconds: 15);

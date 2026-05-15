@@ -28,11 +28,18 @@ class QuizSummaryModal extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.emoji_events, color: Colors.amber, size: 80),
+          Icon(
+            summary.completed ? Icons.emoji_events : Icons.heart_broken_rounded,
+            color: summary.completed ? Colors.amber : AppColors.error,
+            size: 80,
+          ),
           const SizedBox(height: 24),
           Text(
-            "¡Misión Completada!",
-            style: Theme.of(context).textTheme.titleMedium,
+            summary.completed ? "¡Misión Completada!" : "Te quedaste sin vidas",
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: summary.completed ? null : AppColors.error,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 32),
           Row(

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
 import 'package:flutter_app/core/utils/error_handler.dart';
 import 'package:flutter_app/core/widgets/padded_card.dart';
+import 'package:flutter_app/core/widgets/upgrade_plan_widget.dart';
 import 'package:flutter_app/features/home/presentation/providers/navigation_provider.dart';
 import 'package:flutter_app/features/content/data/models/responses/historical_period_response.dart';
 import 'package:flutter_app/features/content/presentation/pages/topics_list_page.dart';
 import 'package:flutter_app/features/content/presentation/providers/content_notifier.dart';
+import 'package:flutter_app/features/learning/presentation/providers/user_progress_notifier.dart';
+import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PeriodsListPage extends ConsumerStatefulWidget {
@@ -54,6 +57,22 @@ class _PeriodsListPageState extends ConsumerState<PeriodsListPage> {
   }
 
   void _goToTopics(HistoricalPeriodResponse period) {
+    final user = ref.read(authUserProvider).valueOrNull;
+    final isPremium = user?.subscriptionPlan.isPremium ?? false;
+    final progress = ref.read(userProgressProvider).valueOrNull;
+
+    if (!isPremium && progress != null && progress.lives <= 0) {
+      showDialog(
+        context: context,
+        builder: (context) => const UpgradePlanWidget(
+          title: '¡Te quedaste sin vidas!',
+          message:
+              'Pásate a Premium para tener vidas infinitas y seguir aprendiendo sin interrupciones.',
+        ),
+      );
+      return;
+    }
+
     ref.read(homeOverlayProvider.notifier).state = TopicsListPage(
       periodId: period.id,
       periodName: period.name,

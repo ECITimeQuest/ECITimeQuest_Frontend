@@ -7,13 +7,30 @@ import 'package:flutter_app/core/widgets/upgrade_plan_widget.dart';
 import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
 
 /// Controla si el banner de upgrade es visible en el home.
-final showUpgradeBannerProvider = StateProvider<bool>((ref) => true);
+final showUpgradeBannerProvider = StateProvider.autoDispose<bool>(
+  (ref) => true,
+);
 
-class HomeContent extends ConsumerWidget {
+class HomeContent extends ConsumerStatefulWidget {
   const HomeContent({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeContent> createState() => _HomeContentState();
+}
+
+class _HomeContentState extends ConsumerState<HomeContent> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && ref.read(authUserProvider).valueOrNull != null) {
+        ref.read(authUserProvider.notifier).loadMe();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final user = ref.watch(authUserProvider).valueOrNull;
     final isPremium = user != null && user.subscriptionPlan.isPremium;
     final showBanner = ref.watch(showUpgradeBannerProvider);

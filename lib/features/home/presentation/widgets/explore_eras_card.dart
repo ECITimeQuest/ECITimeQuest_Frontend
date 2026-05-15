@@ -1,5 +1,3 @@
-import 'package:avatar_stack/animated_avatar_stack.dart';
-import 'package:avatar_stack/positions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
@@ -29,33 +27,7 @@ class ExploreErasCard extends ConsumerWidget {
             ],
           ),
           const Text(
-            "Sigue tu rastro por la ilustración o salta a la era de los Samuráis",
-          ),
-          AnimatedAvatarStack(
-            height: 40,
-            width: 120,
-            settings: RestrictedPositions(maxCoverage: 0.45, minCoverage: 0.25),
-            infoWidgetBuilder: (surplus, context) {
-              return Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.primary,
-                  border: Border.all(color: Colors.white, width: 2),
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  '+$surplus',
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              );
-            },
-            avatars: List.generate(
-              15,
-              (n) => NetworkImage('https://i.pravatar.cc/150?img=$n'),
-            ),
+            "Sigue tu rastro por el renacimiento o salta a la revolución industrial",
           ),
           const SizedBox(height: 8),
           SizedBox(
