@@ -33,6 +33,21 @@ class BackendAuthDataSource {
     }
   }
 
+  Future<UserResponse> updateSubscription(
+    String userId,
+    String plan,
+  ) async {
+    try {
+      final response = await _dio.patch<Map<String, dynamic>>(
+        ApiConfig.updateSubscriptionPath(userId),
+        data: {'subscription_plan': plan},
+      );
+      return _parseUserResponse(response.data);
+    } on DioException catch (exception) {
+      throw _exceptionMapper.map(exception);
+    }
+  }
+
   UserResponse _parseUserResponse(Map<String, dynamic>? data) {
     if (data == null) {
       throw const ApiException(message: 'Empty response body');
