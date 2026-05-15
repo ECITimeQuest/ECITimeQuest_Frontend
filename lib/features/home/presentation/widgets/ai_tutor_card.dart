@@ -38,7 +38,7 @@ class AiTutorCard extends ConsumerWidget {
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
-                    ref.read(navigationIndexProvider.notifier).state = 2;
+                    ref.read(navigationIndexProvider.notifier).state = 3;
                   },
                   child: Row(
                     spacing: 8,

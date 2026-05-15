@@ -12,10 +12,13 @@ final userProgressProvider =
 
 class UserProgressNotifier extends AsyncNotifier<UserProgressResponse?>
     with TaskRunnerMixin<UserProgressResponse?> {
+  Future<UserProgressResponse?>? _ongoingFetch;
+
   @override
   Future<UserProgressResponse?> build() async {
-    final user = ref.watch(authUserProvider.select((s) => s.valueOrNull));
-    if (user == null) {
+    final userId = ref.watch(authUserProvider.select((s) => s.valueOrNull?.id));
+
+    if (userId == null) {
       return null;
     }
 
@@ -23,13 +26,19 @@ class UserProgressNotifier extends AsyncNotifier<UserProgressResponse?>
   }
 
   Future<UserProgressResponse?> getUserProgress() async {
-    return runTask(
+    if (_ongoingFetch != null) {
+      return _ongoingFetch;
+    }
+
+    _ongoingFetch = runTask(
       flowName: 'UserProgressFlow',
       startMessage: 'Obteniendo progreso del usuario...',
       successMessage: 'Progreso obtenido exitosamente',
       errorMessage: 'ERROR al obtener progreso',
       action: () => ref.read(learningRepositoryProvider).getUserProgress(),
     );
+
+    return _ongoingFetch;
   }
 
   void updateFromAnswer(SubmitAnswerResponse response) {

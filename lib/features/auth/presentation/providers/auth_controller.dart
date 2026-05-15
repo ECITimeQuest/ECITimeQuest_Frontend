@@ -10,6 +10,9 @@ final authUserProvider = AsyncNotifierProvider<AuthNotifier, UserResponse?>(
 );
 
 class AuthNotifier extends AsyncNotifier<UserResponse?> {
+  Future<UserResponse?>? _ongoingFetch;
+  DateTime? _lastFetch;
+
   @override
   Future<UserResponse?> build() async => null;
 
@@ -76,6 +79,22 @@ class AuthNotifier extends AsyncNotifier<UserResponse?> {
   }
 
   Future<UserResponse> loadMe() async {
+    if (_ongoingFetch != null) {
+      final result = await _ongoingFetch;
+      if (result != null) return result;
+    }
+
+    if (_lastFetch != null &&
+        DateTime.now().difference(_lastFetch!).inSeconds < 5) {
+      if (state.hasValue && state.value != null) {
+        return state.value!;
+      }
+    }
+
+    if (state.isLoading) {
+      return state.value!;
+    }
+
     return _runUserRead(
       successMessage: 'Datos del usuario cargados correctamente',
       errorMessage: 'Error cargando datos del usuario',
@@ -122,8 +141,18 @@ class AuthNotifier extends AsyncNotifier<UserResponse?> {
     required Future<UserResponse> Function(AuthRepository repo) action,
   }) async {
     final repo = ref.read(authRepositoryProvider);
-    state = const AsyncLoading<UserResponse?>();
-    final result = await AsyncValue.guard<UserResponse>(() => action(repo));
+
+    if (!state.hasValue || state.value == null) {
+      state = const AsyncLoading<UserResponse?>();
+    }
+
+    _ongoingFetch = action(repo);
+    final result = await AsyncValue.guard<UserResponse>(() async {
+      final res = await _ongoingFetch;
+      return res!;
+    });
+
+    _ongoingFetch = null;
 
     if (result.hasError) {
       developer.log(
@@ -134,6 +163,7 @@ class AuthNotifier extends AsyncNotifier<UserResponse?> {
         level: 1000,
       );
     } else {
+      _lastFetch = DateTime.now();
       developer.log(successMessage, name: 'AuthSync', level: 800);
     }
 

@@ -14,11 +14,6 @@ class _ProfileHeaderState extends ConsumerState<ProfileHeader> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && ref.read(authUserProvider).valueOrNull != null) {
-        ref.read(authUserProvider.notifier).loadMe();
-      }
-    });
   }
 
   @override

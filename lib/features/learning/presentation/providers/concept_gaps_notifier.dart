@@ -11,23 +11,30 @@ final conceptGapsProvider =
 
 class ConceptGapsNotifier extends AsyncNotifier<List<ConceptGapResponse>>
     with TaskRunnerMixin<List<ConceptGapResponse>> {
+  Future<List<ConceptGapResponse>>? _ongoingFetch;
+
   @override
   Future<List<ConceptGapResponse>> build() async {
-    final user = ref.watch(authUserProvider.select((s) => s.valueOrNull));
-    if (user == null) {
-      return [];
-    }
-
+    final userId = ref.watch(authUserProvider.select((s) => s.valueOrNull?.id));
+    if (userId == null) return [];
     return getConceptGaps();
   }
 
   Future<List<ConceptGapResponse>> getConceptGaps() async {
-    return runTask(
+    if (_ongoingFetch != null) return _ongoingFetch!;
+
+    _ongoingFetch = runTask(
       flowName: 'ConceptGapsFlow',
       startMessage: 'Obteniendo vacíos conceptuales...',
       successMessage: 'Vacíos conceptuales obtenidos exitosamente',
       errorMessage: 'ERROR al obtener vacíos conceptuales',
       action: () => ref.read(learningRepositoryProvider).getConceptGaps(),
     );
+
+    try {
+      return await _ongoingFetch!;
+    } finally {
+      _ongoingFetch = null;
+    }
   }
 }
