@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
+import 'package:flutter_app/features/learning/presentation/providers/era_mastery_notifier.dart';
 
-class MasterySection extends StatelessWidget {
+class MasterySection extends ConsumerWidget {
   const MasterySection({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final masteryAsync = ref.watch(eraMasteryProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -14,25 +18,41 @@ class MasterySection extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 20),
-        _buildProgressBar(
-          context,
-          title: 'Historia Antigua',
-          progress: 0.90,
-          percentage: '90%',
-        ),
-        const SizedBox(height: 16),
-        _buildProgressBar(
-          context,
-          title: 'Edad Media',
-          progress: 0.65,
-          percentage: '65%',
-        ),
-        const SizedBox(height: 16),
-        _buildProgressBar(
-          context,
-          title: 'Historia Moderna',
-          progress: 0.45,
-          percentage: '45%',
+        masteryAsync.when(
+          data: (masteries) {
+            if (masteries.isEmpty) {
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: Text('Comienza a aprender para medir tu maestría.'),
+                ),
+              );
+            }
+            return Column(
+              children: masteries.map((mastery) {
+                final isLast = masteries.last == mastery;
+                final percentageStr = '${(mastery.masteryPercentage).toInt()}%';
+                return Column(
+                  children: [
+                    _buildProgressBar(
+                      context,
+                      title: mastery.periodName,
+                      progress: mastery.masteryPercentage / 100,
+                      percentage: percentageStr,
+                    ),
+                    if (!isLast) const SizedBox(height: 16),
+                  ],
+                );
+              }).toList(),
+            );
+          },
+          loading: () => const Center(
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          error: (err, _) => const SizedBox.shrink(),
         ),
       ],
     );

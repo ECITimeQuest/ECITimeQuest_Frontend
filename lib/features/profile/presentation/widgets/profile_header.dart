@@ -1,16 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
+import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
 
-class ProfileHeader extends StatelessWidget {
+class ProfileHeader extends ConsumerWidget {
   const ProfileHeader({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userState = ref.watch(authUserProvider);
+    final user = userState.valueOrNull;
+    final isPremium = user?.subscriptionPlan.isPremium ?? false;
+    final email = user?.email;
+    final nameFromUser = user?.name;
+
+    final displayName = (nameFromUser != null && nameFromUser.isNotEmpty)
+        ? nameFromUser
+        : (email != null && email.contains('@'))
+        ? email.split('@').first
+        : 'Usuario';
+
     return Column(
       children: [
-        _buildAvatar(),
+        _buildAvatar(isPremium),
         const SizedBox(height: 24),
-        Text('Julián Valerius', style: Theme.of(context).textTheme.titleLarge),
+        Text(
+          displayName,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: isPremium ? AppColors.tertiary : null,
+            fontWeight: isPremium ? FontWeight.bold : null,
+          ),
+        ),
         const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -22,7 +42,7 @@ class ProfileHeader extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              'Explorador Renacentista',
+              'Explorador',
               style: Theme.of(
                 context,
               ).textTheme.titleSmall?.copyWith(color: AppColors.secondary),
@@ -33,7 +53,7 @@ class ProfileHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatar() {
+  Widget _buildAvatar(bool isPremium) {
     return Stack(
       alignment: Alignment.bottomRight,
       children: [
@@ -56,19 +76,24 @@ class ProfileHeader extends StatelessWidget {
             child: Icon(Icons.person_rounded, size: 80, color: Colors.white54),
           ),
         ),
-        Positioned(
-          bottom: 2,
-          right: 2,
-          child: Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: AppColors.tertiary,
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 3),
+        if (isPremium)
+          Positioned(
+            bottom: 2,
+            right: 2,
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: AppColors.tertiary,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 3),
+              ),
+              child: const Icon(
+                Icons.verified,
+                color: Colors.black87,
+                size: 18,
+              ),
             ),
-            child: const Icon(Icons.verified, color: Colors.black87, size: 18),
           ),
-        ),
       ],
     );
   }

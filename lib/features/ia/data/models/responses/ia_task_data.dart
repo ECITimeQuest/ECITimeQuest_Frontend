@@ -11,6 +11,11 @@ sealed class IATaskData {
         json['content'] as Map<String, dynamic>,
       ),
       _ when json.containsKey('questions') => QuizResponse.fromJson(json),
+      _
+          when json.containsKey('concept') &&
+              json.containsKey('explanation') &&
+              json.containsKey('severity') =>
+        GapAnalysisResponse.fromJson(json),
       _ when json.containsKey('explanation') =>
         AnswerExplanationResponse.fromJson(json),
       _ when json.containsKey('summary') && json.containsKey('key_facts') =>
@@ -88,6 +93,26 @@ class AnswerExplanationResponse extends IATaskData {
       explanation: json['explanation'] as String,
       keyConcept: json['key_concept'] as String,
       tip: json['tip'] as String,
+    );
+  }
+}
+
+class GapAnalysisResponse extends IATaskData {
+  final String concept;
+  final String explanation;
+  final String severity;
+
+  const GapAnalysisResponse({
+    required this.concept,
+    required this.explanation,
+    required this.severity,
+  });
+
+  factory GapAnalysisResponse.fromJson(Map<String, dynamic> json) {
+    return GapAnalysisResponse(
+      concept: json['concept'] as String,
+      explanation: json['explanation'] as String,
+      severity: json['severity'] as String,
     );
   }
 }

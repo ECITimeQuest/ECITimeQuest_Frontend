@@ -5,6 +5,8 @@ import 'package:flutter_app/features/learning/data/models/responses/submit_answe
 import 'package:flutter_app/features/ia/presentation/providers/ia_notifier.dart';
 import 'package:flutter_app/features/learning/presentation/widgets/ia_explanation_section.dart';
 import 'package:flutter_app/features/learning/presentation/widgets/reward_item.dart';
+import 'package:flutter_app/core/widgets/upgrade_plan_widget.dart';
+import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FeedbackModal extends StatefulWidget {
@@ -33,6 +35,8 @@ class _FeedbackModalState extends State<FeedbackModal> {
     return Consumer(
       builder: (context, ref, child) {
         final iaState = ref.watch(iaProvider);
+        final user = ref.read(authUserProvider).valueOrNull;
+        final isPremium = user != null && user.subscriptionPlan.isPremium;
 
         return ConstrainedBox(
           constraints: BoxConstraints(
@@ -68,7 +72,16 @@ class _FeedbackModalState extends State<FeedbackModal> {
                   ),
                   const SizedBox(height: 24),
                   if (!widget.isCorrect) ...[
-                    IAExplanationSection(iaState: iaState),
+                    if (isPremium)
+                      IAExplanationSection(iaState: iaState)
+                    else
+                      const UpgradePlanWidget(
+                        title: 'Explicación con IA',
+                        message:
+                            'Mejora a Premium para recibir explicaciones detalladas sobre tus respuestas incorrectas y aprender más rápido.',
+                        isDialog: false,
+                        showButtons: false,
+                      ),
                     const SizedBox(height: 24),
                   ],
                   if (widget.result != null) ...[
