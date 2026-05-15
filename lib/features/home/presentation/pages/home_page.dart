@@ -30,8 +30,19 @@ class HomePage extends ConsumerWidget {
         title: Row(
           spacing: 8,
           children: [
-            Icon(Icons.castle, color: AppColors.primary),
-            Text("TimeQuest", style: TextStyle(color: AppColors.primary)),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset(
+                'assets/images/app_icon.png',
+                height: 32,
+                width: 32,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Text(
+              "TimeQuest",
+              style: TextStyle(color: AppColors.primary, letterSpacing: -1.3),
+            ),
           ],
         ),
         actions: [
