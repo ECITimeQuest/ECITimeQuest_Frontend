@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
 import 'package:flutter_app/core/widgets/app_button.dart';
+import 'package:flutter_app/features/home/presentation/providers/navigation_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UpgradePlanWidget extends StatelessWidget {
+class UpgradePlanWidget extends ConsumerWidget {
   final String title;
   final String message;
   final VoidCallback? onUpgradeTap;
@@ -19,7 +21,7 @@ class UpgradePlanWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final card = Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
@@ -93,13 +95,21 @@ class UpgradePlanWidget extends StatelessWidget {
                     onPressed:
                         onUpgradeTap ??
                         () {
-                          // TODO: Navigate to upgrade page when available
-                          Navigator.of(context).pop();
+                          // Navegar al tab de suscripción (índice 2)
+                          ref.read(navigationIndexProvider.notifier).state = 2;
+                          ref.read(homeOverlayProvider.notifier).state = null;
+                          if (isDialog && Navigator.of(context).canPop()) {
+                            Navigator.of(context).pop();
+                          }
                         },
                   ),
                   const SizedBox(height: 8),
                   TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () {
+                      if (isDialog && Navigator.of(context).canPop()) {
+                        Navigator.of(context).pop();
+                      }
+                    },
                     style: TextButton.styleFrom(foregroundColor: Colors.white),
                     child: const Text('Quizás más tarde'),
                   ),
