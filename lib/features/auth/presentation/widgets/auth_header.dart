@@ -1,35 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/core/theme/app_colors.dart';
 
 class AuthHeader extends StatelessWidget {
   final String title;
   final String subtitle;
-  final IconData icon;
 
-  const AuthHeader({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    this.icon = Icons.castle,
-  });
+  const AuthHeader({super.key, required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       spacing: 20,
       children: [
-        Card(
-          color: AppColors.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+        Container(
+          height: 80,
+          width: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-          child: Padding(
-            padding: EdgeInsets.all(15),
-            child: Icon(icon, color: Colors.white),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.asset('assets/images/app_icon.png', fit: BoxFit.cover),
           ),
         ),
         Column(
-          spacing: 5,
+          spacing: 8,
           children: [
             Text(title, style: Theme.of(context).textTheme.displayMedium),
             Text(subtitle),

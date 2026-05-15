@@ -124,26 +124,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
                   onPressed: _handleSubmit,
                   isLoading: _isCredentialsLoading,
                   loadingLabel: 'Iniciando...',
-                  // style: FilledButton.styleFrom(
-                  //   backgroundColor: AppColors.primary,
-                  // ),
                 ),
-                // child: FilledButton(
-                //   onPressed: isAnyAuthLoading ? null : _handleSubmit,
-                //   child: _isCredentialsLoading
-                //       ? const SizedBox(
-                //           height: 20,
-                //           width: 20,
-                //           child: CircularProgressIndicator(
-                //             strokeWidth: 2,
-                //             color: Colors.white,
-                //           ),
-                //         )
-                //       : Text(
-                //           widget.submitText,
-                //           style: const TextStyle(fontWeight: FontWeight.bold),
-                //         ),
-                // ),
               ),
             ],
           ),
