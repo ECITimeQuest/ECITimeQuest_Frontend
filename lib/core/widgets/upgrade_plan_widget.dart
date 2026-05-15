@@ -8,6 +8,7 @@ class UpgradePlanWidget extends ConsumerWidget {
   final String title;
   final String message;
   final VoidCallback? onUpgradeTap;
+  final VoidCallback? onDismiss;
   final bool isDialog;
   final bool showButtons;
 
@@ -16,6 +17,7 @@ class UpgradePlanWidget extends ConsumerWidget {
     this.title = 'Desbloquea el Poder de la IA',
     required this.message,
     this.onUpgradeTap,
+    this.onDismiss,
     this.isDialog = true,
     this.showButtons = true,
   });
@@ -106,7 +108,9 @@ class UpgradePlanWidget extends ConsumerWidget {
                   const SizedBox(height: 8),
                   TextButton(
                     onPressed: () {
-                      if (isDialog && Navigator.of(context).canPop()) {
+                      if (onDismiss != null) {
+                        onDismiss!();
+                      } else if (isDialog && Navigator.of(context).canPop()) {
                         Navigator.of(context).pop();
                       }
                     },
