@@ -55,6 +55,11 @@ class QuizNotifier extends StateNotifier<QuizState?> {
     final currentState = state;
     if (currentState == null) return null;
 
+    final lives = ref.read(userProgressProvider).valueOrNull?.lives ?? 0;
+    if (lives <= 0) {
+      return await _finalizeSession(currentState, completed: false);
+    }
+
     if (currentState.currentIndex >= currentState.questions.length - 1) {
       return await _finalizeSession(currentState);
     }
@@ -131,7 +136,10 @@ class QuizNotifier extends StateNotifier<QuizState?> {
     }
   }
 
-  Future<Map<String, dynamic>?> _finalizeSession(QuizState currentState) async {
+  Future<Map<String, dynamic>?> _finalizeSession(
+    QuizState currentState, {
+    bool completed = true,
+  }) async {
     final totalAnswers =
         currentState.correctCount + currentState.incorrectCount;
     final avgResponseTimeMs = totalAnswers > 0
@@ -142,7 +150,7 @@ class QuizNotifier extends StateNotifier<QuizState?> {
       correctAnswers: currentState.correctCount,
       wrongAnswers: currentState.incorrectCount,
       avgResponseTimeMs: avgResponseTimeMs,
-      completed: true,
+      completed: completed,
     );
 
     try {

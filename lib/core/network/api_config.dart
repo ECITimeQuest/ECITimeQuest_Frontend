@@ -1,7 +1,7 @@
 class ApiConfig {
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://192.168.100.3:8000',
+    defaultValue: 'http://localhost:8000',
   );
 
   static const Duration connectTimeout = Duration(seconds: 15);
@@ -28,6 +28,8 @@ class ApiConfig {
   static String conceptGapsPath = '/learning/gaps';
   static String eraMasteryPath = '/learning/periods/mastery';
   static String homeSummaryPath = '/learning/home-summary';
+  static String getTopicProgress(String topicId) =>
+      '/learning/topics/$topicId/progress';
 
   // Content
   static String getIAContext(String topicId) =>

@@ -1,4 +1,6 @@
 import 'package:flutter_app/core/network/api_exception.dart';
+import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
+import 'package:flutter_app/features/learning/presentation/providers/user_progress_notifier.dart';
 import 'package:flutter_app/features/auth/data/models/enums/subscription_plan.dart';
 import 'package:flutter_app/features/auth/data/providers/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,8 +37,9 @@ class SubscriptionNotifier extends AsyncNotifier<SubscriptionState> {
     final previousState = current;
 
     // Optimistic loading: mostramos loading sin perder los datos actuales
-    state = const AsyncLoading<SubscriptionState>()
-        .copyWithPrevious(AsyncData(current));
+    state = const AsyncLoading<SubscriptionState>().copyWithPrevious(
+      AsyncData(current),
+    );
 
     final result = await AsyncValue.guard<SubscriptionState>(() async {
       final repo = ref.read(authRepositoryProvider);
@@ -58,6 +61,8 @@ class SubscriptionNotifier extends AsyncNotifier<SubscriptionState> {
       ).copyWithPrevious(AsyncData(previousState));
     } else {
       state = result;
+      ref.read(authUserProvider.notifier).loadMe();
+      ref.invalidate(userProgressProvider);
     }
   }
 }

@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_app/features/learning/presentation/providers/user_progress_notifier.dart';
+import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
 
 class NavbarItem extends ConsumerWidget {
   const NavbarItem({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final progressState = ref.watch(userProgressProvider);
-    final progress = progressState.valueOrNull;
+    final user = ref.watch(authUserProvider).valueOrNull;
+    final isPremium = user?.subscriptionPlan.isPremium ?? false;
+    final progress = ref.watch(userProgressProvider).valueOrNull;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
@@ -22,7 +24,7 @@ class NavbarItem extends ConsumerWidget {
             iconColor: AppColors.fire,
           ),
           _NavbarStatItem(
-            value: progress?.lives.toString() ?? '5',
+            value: isPremium ? '∞' : (progress?.lives.toString() ?? '5'),
             icon: Icons.favorite,
             iconColor: AppColors.heart,
           ),

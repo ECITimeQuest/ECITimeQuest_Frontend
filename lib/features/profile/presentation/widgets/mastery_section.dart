@@ -3,11 +3,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
 import 'package:flutter_app/features/learning/presentation/providers/era_mastery_notifier.dart';
 
-class MasterySection extends ConsumerWidget {
+class MasterySection extends ConsumerStatefulWidget {
   const MasterySection({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MasterySection> createState() => _MasterySectionState();
+}
+
+class _MasterySectionState extends ConsumerState<MasterySection> {
+  bool _showAll = false;
+  static const int _initialLimit = 3;
+
+  @override
+  Widget build(BuildContext context) {
     final masteryAsync = ref.watch(eraMasteryProvider);
 
     return Column(
@@ -28,22 +36,51 @@ class MasterySection extends ConsumerWidget {
                 ),
               );
             }
+
+            // Ordenamos por porcentaje de maestría (de mayor a menor)
+            final sortedMasteries = [...masteries]
+              ..sort(
+                (a, b) => b.masteryPercentage.compareTo(a.masteryPercentage),
+              );
+
+            final displayedMasteries = _showAll
+                ? sortedMasteries
+                : sortedMasteries.take(_initialLimit).toList();
+
             return Column(
-              children: masteries.map((mastery) {
-                final isLast = masteries.last == mastery;
-                final percentageStr = '${(mastery.masteryPercentage).toInt()}%';
-                return Column(
-                  children: [
-                    _buildProgressBar(
-                      context,
-                      title: mastery.periodName,
-                      progress: mastery.masteryPercentage / 100,
-                      percentage: percentageStr,
+              children: [
+                ...displayedMasteries.map((mastery) {
+                  final percentageStr =
+                      '${(mastery.masteryPercentage).toInt()}%';
+                  return Column(
+                    children: [
+                      _buildProgressBar(
+                        context,
+                        title: mastery.periodName,
+                        progress: mastery.masteryPercentage / 100,
+                        percentage: percentageStr,
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  );
+                }),
+                if (masteries.length > _initialLimit)
+                  Center(
+                    child: TextButton.icon(
+                      onPressed: () => setState(() => _showAll = !_showAll),
+                      icon: Icon(
+                        _showAll
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                      ),
+                      label: Text(
+                        _showAll
+                            ? 'Ver menos'
+                            : 'Ver todas (${masteries.length})',
+                      ),
                     ),
-                    if (!isLast) const SizedBox(height: 16),
-                  ],
-                );
-              }).toList(),
+                  ),
+              ],
             );
           },
           loading: () => const Center(

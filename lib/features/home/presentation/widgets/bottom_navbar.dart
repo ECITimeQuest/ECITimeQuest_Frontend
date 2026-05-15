@@ -39,7 +39,7 @@ class BottomNavBar extends StatelessWidget {
         tabs: [
           GButton(icon: Icons.castle, text: 'HOME'),
           GButton(icon: Icons.map, text: 'MAP'),
-          GButton(icon: Icons.workspace_premium_rounded, text: 'SUSCRIPCIÓN'),
+          GButton(icon: Icons.workspace_premium_rounded, text: 'PLANS'),
           GButton(icon: Icons.person, text: 'PROFILE'),
         ],
       ),

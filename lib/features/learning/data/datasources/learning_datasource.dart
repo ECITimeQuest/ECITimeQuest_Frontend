@@ -9,6 +9,7 @@ import 'package:flutter_app/features/learning/data/models/responses/era_mastery_
 import 'package:flutter_app/features/learning/data/models/responses/home_summary_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/learning_session_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/submit_answer_response.dart';
+import 'package:flutter_app/features/learning/data/models/responses/topic_progress_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/user_badge_response.dart';
 import 'package:flutter_app/features/learning/data/models/responses/user_progress_response.dart';
 
@@ -108,6 +109,15 @@ class LearningDataSource {
     try {
       final response = await _dio.get(ApiConfig.homeSummaryPath);
       return HomeSummaryResponse.fromJson(response.data);
+    } on DioException catch (exception) {
+      throw _exceptionMapper.map(exception);
+    }
+  }
+
+  Future<TopicProgressResponse> getTopicProgress(String topicId) async {
+    try {
+      final response = await _dio.get(ApiConfig.getTopicProgress(topicId));
+      return TopicProgressResponse.fromJson(response.data);
     } on DioException catch (exception) {
       throw _exceptionMapper.map(exception);
     }

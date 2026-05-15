@@ -13,9 +13,8 @@ class UserBadgesNotifier extends AsyncNotifier<List<UserBadgeResponse>>
     with TaskRunnerMixin<List<UserBadgeResponse>> {
   @override
   Future<List<UserBadgeResponse>> build() async {
-    final user = ref.watch(authUserProvider);
-
-    if (user.valueOrNull == null) {
+    final user = ref.watch(authUserProvider.select((s) => s.valueOrNull));
+    if (user == null) {
       return [];
     }
 

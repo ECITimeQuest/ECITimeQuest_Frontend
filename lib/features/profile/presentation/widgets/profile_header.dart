@@ -3,11 +3,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_app/core/theme/app_colors.dart';
 import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
 
-class ProfileHeader extends ConsumerWidget {
+class ProfileHeader extends ConsumerStatefulWidget {
   const ProfileHeader({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProfileHeader> createState() => _ProfileHeaderState();
+}
+
+class _ProfileHeaderState extends ConsumerState<ProfileHeader> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && ref.read(authUserProvider).valueOrNull != null) {
+        ref.read(authUserProvider.notifier).loadMe();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final userState = ref.watch(authUserProvider);
     final user = userState.valueOrNull;
     final isPremium = user?.subscriptionPlan.isPremium ?? false;

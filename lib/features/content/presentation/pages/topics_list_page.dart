@@ -16,6 +16,7 @@ import 'package:flutter_app/features/learning/presentation/pages/topic_study_pag
 import 'package:flutter_app/features/content/presentation/providers/content_notifier.dart';
 import 'package:flutter_app/features/ia/presentation/providers/ia_notifier.dart';
 import 'package:flutter_app/features/home/presentation/providers/navigation_provider.dart';
+import 'package:flutter_app/features/learning/presentation/providers/topic_progress_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TopicsListPage extends ConsumerStatefulWidget {
@@ -221,8 +222,24 @@ class _TopicCardState extends ConsumerState<TopicCard> {
 
   @override
   Widget build(BuildContext context) {
+    final progress = ref
+        .watch(topicProgressProvider(widget.topic.id))
+        .valueOrNull;
+    final isCompleted =
+        progress != null && progress.completionPercentage >= 100;
+
     return PaddedCard(
       verticalPadding: 20,
+      decoration: isCompleted
+          ? BoxDecoration(
+              color: Colors.green.withValues(alpha: 0.05),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: Colors.green.withValues(alpha: 0.2),
+                width: 2,
+              ),
+            )
+          : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -231,16 +248,40 @@ class _TopicCardState extends ConsumerState<TopicCard> {
               Expanded(
                 child: Text(
                   widget.topic.name,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: isCompleted ? Colors.green.shade800 : null,
+                  ),
                 ),
               ),
-              if (widget.topic.isPremium) ...[
+              if (isCompleted) ...[
+                const SizedBox(width: 8),
+                const Icon(Icons.check_circle, color: Colors.green, size: 24),
+              ] else if (widget.topic.isPremium) ...[
                 const SizedBox(width: 8),
                 const Icon(Icons.star, color: AppColors.tertiary, size: 20),
               ],
             ],
           ),
-          const SizedBox(height: 10),
+          if (progress != null && !isCompleted) ...[
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: progress.completionPercentage / 100,
+                backgroundColor: AppColors.surfaceVariant,
+                color: AppColors.primary,
+                minHeight: 6,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              '${progress.completionPercentage.toInt()}% completado',
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: AppColors.onSurfaceVariant,
+              ),
+            ),
+          ],
+          const SizedBox(height: 20),
           Row(
             children: [
               _buildBadge(
@@ -273,7 +314,9 @@ class _TopicCardState extends ConsumerState<TopicCard> {
                     label: 'Ver Contenido',
                     icon: const Icon(Icons.menu_book),
                     style: FilledButton.styleFrom(
-                      backgroundColor: AppColors.secondary,
+                      backgroundColor: isCompleted
+                          ? Colors.green
+                          : AppColors.secondary,
                     ),
                     onPressed: _goToStudyPage,
                   ),

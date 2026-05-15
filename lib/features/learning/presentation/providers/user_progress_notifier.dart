@@ -14,9 +14,8 @@ class UserProgressNotifier extends AsyncNotifier<UserProgressResponse?>
     with TaskRunnerMixin<UserProgressResponse?> {
   @override
   Future<UserProgressResponse?> build() async {
-    final user = ref.watch(authUserProvider);
-
-    if (user.valueOrNull == null) {
+    final user = ref.watch(authUserProvider.select((s) => s.valueOrNull));
+    if (user == null) {
       return null;
     }
 
