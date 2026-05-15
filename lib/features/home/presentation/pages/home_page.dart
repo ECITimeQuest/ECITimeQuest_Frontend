@@ -6,6 +6,7 @@ import 'package:flutter_app/features/home/presentation/widgets/bottom_navbar.dar
 import 'package:flutter_app/features/home/presentation/widgets/navbar_item.dart';
 import 'package:flutter_app/features/content/presentation/pages/periods_list_page.dart';
 import 'package:flutter_app/features/profile/presentation/pages/profile_page.dart';
+import 'package:flutter_app/features/subscription/presentation/pages/subscription_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerWidget {
@@ -14,7 +15,7 @@ class HomePage extends ConsumerWidget {
   final List<Widget> _pages = const [
     HomeContent(),
     PeriodsListPage(),
-    Placeholder(),
+    SubscriptionPage(),
     ProfilePage(),
   ];
 
