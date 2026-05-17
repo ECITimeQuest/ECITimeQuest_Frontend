@@ -65,7 +65,7 @@ class SubscriptionNotifier extends AutoDisposeAsyncNotifier<SubscriptionState> {
       ).copyWithPrevious(AsyncData(previousState));
     } else {
       state = result;
-      ref.read(authUserProvider.notifier).loadMe();
+      await ref.read(authUserProvider.notifier).loadMe(force: true);
       ref.invalidate(userProgressProvider);
     }
   }

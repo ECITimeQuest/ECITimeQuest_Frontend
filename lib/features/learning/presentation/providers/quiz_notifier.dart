@@ -12,6 +12,7 @@ import 'package:flutter_app/features/learning/presentation/providers/learning_no
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_app/features/learning/presentation/providers/user_progress_notifier.dart';
+import 'package:flutter_app/features/learning/presentation/providers/home_summary_notifier.dart';
 import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
 
 import 'quiz_state.dart';
@@ -158,7 +159,8 @@ class QuizNotifier extends StateNotifier<QuizState?> {
           .read(learningControllerProvider.notifier)
           .finishSession(request, currentState.sessionId);
 
-      ref.read(userProgressProvider.notifier).getUserProgress();
+      await ref.read(userProgressProvider.notifier).getUserProgress();
+      await ref.read(homeSummaryProvider.notifier).getHomeSummary();
 
       final result = {
         'summary': summary,

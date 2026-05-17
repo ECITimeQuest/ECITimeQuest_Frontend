@@ -30,15 +30,20 @@ class UserProgressNotifier extends AsyncNotifier<UserProgressResponse?>
       return _ongoingFetch;
     }
 
-    _ongoingFetch = runTask(
-      flowName: 'UserProgressFlow',
-      startMessage: 'Obteniendo progreso del usuario...',
-      successMessage: 'Progreso obtenido exitosamente',
-      errorMessage: 'ERROR al obtener progreso',
-      action: () => ref.read(learningRepositoryProvider).getUserProgress(),
-    );
+    try {
+      _ongoingFetch = runTask(
+        flowName: 'UserProgressFlow',
+        startMessage: 'Obteniendo progreso del usuario...',
+        successMessage: 'Progreso obtenido exitosamente',
+        errorMessage: 'ERROR al obtener progreso',
+        action: () => ref.read(learningRepositoryProvider).getUserProgress(),
+      );
 
-    return _ongoingFetch;
+      final result = await _ongoingFetch;
+      return result;
+    } finally {
+      _ongoingFetch = null;
+    }
   }
 
   void updateFromAnswer(SubmitAnswerResponse response) {
