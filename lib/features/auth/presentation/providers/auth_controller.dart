@@ -78,20 +78,21 @@ class AuthNotifier extends AsyncNotifier<UserResponse?> {
     );
   }
 
-  Future<UserResponse> loadMe() async {
-    if (_ongoingFetch != null) {
+  Future<UserResponse> loadMe({bool force = false}) async {
+    if (!force && _ongoingFetch != null) {
       final result = await _ongoingFetch;
       if (result != null) return result;
     }
 
-    if (_lastFetch != null &&
+    if (!force &&
+        _lastFetch != null &&
         DateTime.now().difference(_lastFetch!).inSeconds < 5) {
       if (state.hasValue && state.value != null) {
         return state.value!;
       }
     }
 
-    if (state.isLoading) {
+    if (!force && state.isLoading) {
       return state.value!;
     }
 
