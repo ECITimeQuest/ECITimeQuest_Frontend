@@ -64,7 +64,7 @@ class _TopicStudyPageState extends ConsumerState<TopicStudyPage> {
 
       final completedTask = await ref
           .read(iaProvider.notifier)
-          .requestAndPollTask<QuizResponse>(request);
+          .requestAndStreamTask<QuizResponse>(request);
 
       AppToast.success('¡Quiz generado exitosamente!');
 

@@ -14,4 +14,8 @@ class IARepository {
   Future<IATaskResponse> getIATask(String taskId) {
     return _iaDataSource.getIATask(taskId);
   }
+
+  Stream<IATaskResponse> streamTaskStatus(String taskId) {
+    return _iaDataSource.streamTaskStatus(taskId);
+  }
 }
