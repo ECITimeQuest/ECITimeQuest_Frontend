@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/core/network/api_config.dart';
 import 'package:flutter_app/core/network/dio_exception_mapper.dart';
@@ -27,6 +28,35 @@ class IADataSource {
     try {
       final response = await _dio.get('${ApiConfig.iaRequestPath}/$taskId');
       return IATaskResponse.fromJson(response.data);
+    } on DioException catch (exception) {
+      throw _exceptionMapper.map(exception);
+    }
+  }
+
+  Stream<IATaskResponse> streamTaskStatus(String taskId) async* {
+    try {
+      final response = await _dio.get<ResponseBody>(
+        '${ApiConfig.iaRequestPath}/$taskId/stream',
+        options: Options(
+          responseType: ResponseType.stream,
+          headers: {'Accept': 'text/event-stream', 'Cache-Control': 'no-cache'},
+        ),
+      );
+
+      final stream = response.data!.stream
+          .cast<List<int>>()
+          .transform(utf8.decoder)
+          .transform(const LineSplitter());
+
+      await for (final line in stream) {
+        if (line.startsWith('data:')) {
+          final dataString = line.substring(5).trim();
+          if (dataString.isNotEmpty) {
+            final Map<String, dynamic> json = jsonDecode(dataString);
+            yield IATaskResponse.fromJson(json);
+          }
+        }
+      }
     } on DioException catch (exception) {
       throw _exceptionMapper.map(exception);
     }

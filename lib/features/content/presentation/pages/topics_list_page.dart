@@ -192,7 +192,7 @@ class _TopicCardState extends ConsumerState<TopicCard> {
 
       final completedTask = await ref
           .read(iaProvider.notifier)
-          .requestAndPollTask<ExpandedContentResponse>(taskRequest);
+          .requestAndStreamTask<ExpandedContentResponse>(taskRequest);
 
       AppToast.success('¡Contenido generado con éxito!');
 

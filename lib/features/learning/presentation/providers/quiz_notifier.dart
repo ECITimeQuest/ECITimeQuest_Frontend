@@ -8,13 +8,16 @@ import 'package:flutter_app/features/learning/data/models/requests/submit_answer
 import 'package:flutter_app/features/learning/data/models/quiz_question.dart';
 import 'package:flutter_app/features/learning/data/models/responses/submit_answer_response.dart';
 import 'package:flutter_app/features/ia/presentation/providers/ia_notifier.dart';
+import 'package:flutter_app/features/ia/data/models/responses/ia_task_data.dart';
 import 'package:flutter_app/features/learning/presentation/providers/learning_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_app/features/learning/presentation/providers/user_progress_notifier.dart';
 import 'package:flutter_app/features/learning/presentation/providers/home_summary_notifier.dart';
 import 'package:flutter_app/features/auth/presentation/providers/auth_controller.dart';
-
+import 'package:flutter_app/features/learning/presentation/providers/era_mastery_notifier.dart';
+import 'package:flutter_app/features/learning/presentation/providers/user_badges_notifier.dart';
+import 'package:flutter_app/features/learning/presentation/providers/concept_gaps_notifier.dart';
 import 'quiz_state.dart';
 
 class QuizNotifier extends StateNotifier<QuizState?> {
@@ -161,6 +164,9 @@ class QuizNotifier extends StateNotifier<QuizState?> {
 
       await ref.read(userProgressProvider.notifier).getUserProgress();
       await ref.read(homeSummaryProvider.notifier).getHomeSummary();
+      await ref.read(eraMasteryProvider.notifier).getEraMastery();
+      await ref.read(userBadgesProvider.notifier).getUserBadges();
+      await ref.read(conceptGapsProvider.notifier).getConceptGaps();
 
       final result = {
         'summary': summary,
@@ -201,13 +207,9 @@ class QuizNotifier extends StateNotifier<QuizState?> {
     );
 
     try {
-      final response = await ref
+      await ref
           .read(iaProvider.notifier)
-          .requestIATask(request);
-
-      if (response.taskId != null) {
-        await ref.read(iaProvider.notifier).pollIATask(response.taskId!);
-      }
+          .requestAndStreamTask<AnswerExplanationResponse>(request);
     } catch (e, stack) {
       developer.log(
         'Error requesting explanation',
