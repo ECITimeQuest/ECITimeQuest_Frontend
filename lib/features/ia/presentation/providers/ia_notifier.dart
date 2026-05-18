@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'package:flutter_app/core/utils/task_runner_mixin.dart';
 import 'package:flutter_app/features/ia/data/models/requests/ia_task_request.dart';
 import 'package:flutter_app/features/ia/data/models/enums/task_status.dart';
@@ -71,7 +72,36 @@ class IANotifier extends AsyncNotifier<IATaskResponse?>
     throw Exception(error);
   }
 
-  Future<IATaskResponse> requestAndPollTask<T>(
+  Future<IATaskResponse> streamIATask(String taskId) async {
+    state = const AsyncLoading<IATaskResponse?>();
+
+    try {
+      final stream = ref.read(iaRepositoryProvider).streamTaskStatus(taskId);
+
+      await for (final response in stream) {
+        state = AsyncData(response);
+
+        if (response.taskStatus == TaskStatus.completed) {
+          return response;
+        }
+
+        if (response.taskStatus == TaskStatus.failed) {
+          final error = response.error ?? 'La tarea de IA falló';
+          state = AsyncError(error, StackTrace.current);
+          throw Exception(error);
+        }
+      }
+
+      const error = 'La conexión SSE se cerró antes de completar la tarea';
+      state = AsyncError(error, StackTrace.current);
+      throw Exception(error);
+    } catch (e) {
+      state = AsyncError(e, StackTrace.current);
+      rethrow;
+    }
+  }
+
+  Future<IATaskResponse> requestAndStreamTask<T>(
     IATaskRequest request, {
     int maxRetries = 15,
   }) async {
@@ -89,15 +119,46 @@ class IANotifier extends AsyncNotifier<IATaskResponse?>
       throw Exception('No se recibió un ID de tarea para hacer polling');
     }
 
-    final completedTask = await pollIATask(
-      taskResponse.taskId!,
-      maxRetries: maxRetries,
-    );
+    try {
+      developer.log(
+        'Iniciando conexión SSE para la tarea: ${taskResponse.taskId}',
+        name: 'IANotifier',
+      );
 
-    if (completedTask.data is! T) {
-      throw Exception('El tipo de dato retornado no es $T');
+      final completedTask = await streamIATask(taskResponse.taskId!);
+
+      if (completedTask.data is! T) {
+        throw Exception('El tipo de dato retornado no es $T');
+      }
+
+      developer.log(
+        'Tarea completada exitosamente, data es de tipo: $T',
+        name: 'IANotifier',
+      );
+
+      return completedTask;
+    } catch (e) {
+      developer.log(
+        'Conexión SSE fallida o cancelada, recurriendo a polling tradicional...',
+        error: e,
+        name: 'IANotifier',
+      );
+
+      final completedTask = await pollIATask(
+        taskResponse.taskId!,
+        maxRetries: maxRetries,
+      );
+
+      if (completedTask.data is! T) {
+        throw Exception('El tipo de dato retornado no es $T');
+      }
+
+      developer.log(
+        'Tarea completada exitosamente usando polling, data es de tipo: $T',
+        name: 'IANotifier',
+      );
+
+      return completedTask;
     }
-
-    return completedTask;
   }
 }

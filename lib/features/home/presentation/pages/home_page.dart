@@ -7,6 +7,7 @@ import 'package:flutter_app/features/home/presentation/widgets/navbar_item.dart'
 import 'package:flutter_app/features/content/presentation/pages/periods_list_page.dart';
 import 'package:flutter_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter_app/features/subscription/presentation/pages/subscription_page.dart';
+import 'package:flutter_app/features/learning/presentation/pages/quiz_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerWidget {
@@ -23,6 +24,7 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(navigationIndexProvider);
     final overlay = ref.watch(homeOverlayProvider);
+    final isQuizActive = overlay is QuizPage;
 
     return Scaffold(
       extendBody: true,
@@ -55,20 +57,22 @@ class HomePage extends ConsumerWidget {
             20,
             20,
             20,
-            MediaQuery.of(context).padding.bottom + 110,
+            MediaQuery.of(context).padding.bottom + (isQuizActive ? 20 : 110),
           ),
           child: overlay ?? _pages[selectedIndex],
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        child: BottomNavBar(
-          selectedIndex: selectedIndex,
-          onTabChange: (index) {
-            ref.read(homeOverlayProvider.notifier).state = null;
-            ref.read(navigationIndexProvider.notifier).state = index;
-          },
-        ),
-      ),
+      bottomNavigationBar: isQuizActive
+          ? null
+          : SafeArea(
+              child: BottomNavBar(
+                selectedIndex: selectedIndex,
+                onTabChange: (index) {
+                  ref.read(homeOverlayProvider.notifier).state = null;
+                  ref.read(navigationIndexProvider.notifier).state = index;
+                },
+              ),
+            ),
     );
   }
 }

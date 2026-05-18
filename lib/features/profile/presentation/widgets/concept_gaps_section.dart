@@ -144,7 +144,7 @@ class _InteractiveGapCardState extends ConsumerState<_InteractiveGapCard> {
 
       final completedTask = await ref
           .read(iaProvider.notifier)
-          .requestAndPollTask<GapAnalysisResponse>(taskRequest);
+          .requestAndStreamTask<GapAnalysisResponse>(taskRequest);
 
       final analysis = completedTask.data as GapAnalysisResponse;
 
